@@ -1,0 +1,171 @@
+import random
+
+from graphicInterface.graphics import *
+from graphicInterface.button import Button
+from datetime import datetime
+
+from character import Character
+from room import Room
+
+
+class GameWindow:
+    def __init__(self, log):
+        self.window = GraphWin('RPG', 850, 600)     # DO NOT CHANGE WINDOW DIMENSIONS
+        self.rooms = []
+        self.character = Character()
+        self.player_position = Circle(Point(0, 0), 0)
+        self.enemy_positions = []
+
+        self.run_flag = True
+        self.log = {}
+        self.save_log = log
+
+        # action buttons
+        self.attack_buttons = []
+        self.pickup_buttons = []
+        self.shop_buttons = []
+        self.inventory_buttons = []
+        self.__drawActionWindow()
+
+        self.labels = []
+        self.control_buttons = []
+        self.__generateRooms()
+        self.__drawControlButtons()
+        self.__drawRoomGrid()
+
+    def __drawActionWindow(self):
+        rect = Rectangle(Point(600, 50), Point(825, 550))
+        rect.draw(self.window)
+
+    def __drawRoomGrid(self):
+        margin_x = 50
+        margin_y = 50
+        grid_width = 500
+        grid_height = 350
+        num_rows = 8
+        num_columns = 8
+
+        cell_width = grid_width / num_columns
+        cell_height = grid_height / num_rows
+
+        self.display_matrix = []
+
+        for i in range(num_rows):
+            row = []
+            for j in range(num_columns):
+                top_left = Point(margin_x + j * cell_width, margin_y + i * cell_height)
+                bottom_right = Point(margin_x + (j + 1) * cell_width, margin_y + (i + 1) * cell_height)
+                center_x = (top_left.getX() + bottom_right.getX()) / 2
+                center_y = (top_left.getY() + bottom_right.getY()) / 2
+                center = Point(center_x, center_y)
+                row.append(center)
+                cell = Rectangle(top_left, bottom_right)
+                cell.draw(self.window)
+
+                if i == 0 and j == 0:
+                    cell.setFill('orange')
+
+                elif i == num_rows-1 and j == num_columns-1:
+                    cell.setFill('orange')
+
+            self.display_matrix.append(row)
+
+    def __generateRooms(self):  # Here, we need to create some sort of randomness so that we can create rooms randomly
+        for room in range(11):  # currently creates 10 rooms
+            shop_count = 100 if self.character.rooms_cleared % 5 == 0 else 0
+            barrier_count = random.randint(0, 101)
+            enemy_count = random.randint(0, 101)
+            item_count = random.randint(0, 101)
+
+            self.rooms.append(Room(item_count, enemy_count, barrier_count, shop_count, self.character.getXp()))
+
+    def __drawControlButtons(self):
+        Rectangle(Point(50, 50), Point(550, 400)).draw(self.window)  # where the game matrix will be displayed
+        sc = self.character
+
+        self.control_buttons.append(Button(self.window, Point(300, 450), 40, 40, '↑', sc.moveNorth))
+        self.control_buttons.append(Button(self.window, Point(300, 530), 40, 40, '↓', sc.moveSouth))
+        self.control_buttons.append(Button(self.window, Point(260, 490), 40, 40, '←', sc.moveEast))
+        self.control_buttons.append(Button(self.window, Point(340, 490), 40, 40, '→', sc.moveWest))
+
+        self.control_buttons.append(Button(self.window, Point(440, 450), 70, 40, 'action', sc.performAction))
+        self.control_buttons.append(Button(self.window, Point(440, 490), 70, 40, 'inventory', sc.viewInventory))
+        self.control_buttons.append(Button(self.window, Point(440, 530), 70, 40, 'shop', sc.shop))   # tbc
+
+        self.control_buttons.append(Button(self.window, Point(75, 530), 40, 40, 'quit', self.quit))    # quit game
+
+        for n in self.control_buttons:
+            n.activate()
+
+    def _updateLabels(self):
+        for label in self.labels:
+            label.undraw()
+
+        hp, max_hp = self.character.getHp()
+        gold = self.character.getGold()
+        room_number = self.character.getRoomNumber()
+        converted = ((hp/max_hp) * 90) + 90
+
+        hp_text = Text(Point(65, 420), 'HP')
+        hp_text.draw(self.window)
+
+        max_hp_rect = Rectangle(Point(90, 410), Point(180, 430))
+        max_hp_rect.setFill(color_rgb(226, 226, 226))
+        max_hp_rect.draw(self.window)
+
+        hp_rect = Rectangle(Point(90, 410), Point(converted, 430))
+        hp_rect.setFill(color_rgb(140, 255, 167))
+        hp_rect.draw(self.window)
+
+        gold_text = Text(Point(86, 450), f'Gold: {gold}')
+        gold_text.draw(self.window)
+
+        rooms_text = Text(Point(80, 20), f'Rooms cleared: {room_number}')
+        rooms_text.draw(self.window)
+
+        self.labels = [hp_text, hp_rect, max_hp_rect, gold_text, rooms_text]
+
+    def _updatePlayerLocation(self):  # can add smoother graphics here if we want (see #animation.py)
+        x, y = self.character.getCurrentPos()
+        self.player_position.undraw()
+        self.player_position = Circle(self.display_matrix[x][y], 15)
+        self.player_position.setFill(color_rgb(0, 0, 0))
+        self.player_position.draw(self.window)
+
+    def _updateEnemyLocation(self):
+        enemies = self.character.getEnemyPositions()
+        for enemy_pos in enemies:
+            x, y = enemy_pos
+            position = Circle(self.display_matrix[x][y], 12)
+            position.setFill(color_rgb(230, 40, 40))
+            position.draw(self.window)
+            self.enemy_positions.append(position)
+
+    def startWindow(self):
+        while self.run_flag:
+            self._updateLabels()
+            self._updatePlayerLocation()
+            self._updateEnemyLocation()
+
+            p = self.window.getMouse()
+
+            for button in self.control_buttons:
+                if button.clicked(p):
+                    button.deactivate()
+                    self.log[datetime.now()] = button.getLabel()[0]
+                    action = button.getAction()
+                    action()
+                    button.activate()
+
+    def quit(self):
+        if self.save_log:  # write this into a file.
+            print(f'\nLog from {str(datetime.now())[:11]}\nTotal actions: {len(self.log)}\n')
+            print('  Time   | Action')
+            for t, n in self.log.items():
+                print(f'{str(t)[11:19]} | {n}')
+        self.run_flag = False
+
+
+if __name__ == '__main__':
+    gw = GameWindow(log=True)
+    gw.startWindow()
