@@ -13,12 +13,17 @@ class GameWindow:   # This controls the UI and button functionality
         self.window = GraphWin('RPG', 850, 600)     # DO NOT CHANGE WINDOW DIMENSIONS
         self.rooms = []
         self.character = Character()
-        self.player_position = Circle(Point(0, 0), 0)      # Instantiated player position circle object
-        self.enemy_positions = []
 
         self.run_flag = True
         self.log = {}
         self.save_log = log
+
+        # positions of items
+        self.enemy_positions = []
+        self.item_positions = []
+        self.shop_positions = []
+        self.barrier_positions = []
+        self.player_position = Circle(Point(0, 0), 0)      # Instantiated player position circle object
 
         # action block buttons
         self.attack_buttons = []
@@ -29,7 +34,7 @@ class GameWindow:   # This controls the UI and button functionality
 
         self.labels = []
         self.control_buttons = []
-        # self.__generateRooms()
+        # self.__generateRooms()    # This is obsolete
         self.__drawControlButtons()
         self.__drawRoomGrid()
 
@@ -132,7 +137,7 @@ class GameWindow:   # This controls the UI and button functionality
         self.player_position.setFill(color_rgb(0, 0, 0))
         self.player_position.draw(self.window)
 
-    def _updateEnemyLocation(self):
+    def _updateEnemyLocation(self):                         # It is likely that we can change the update methods into 1
         enemies = self.character.getEnemyPositions()
         for pos in self.enemy_positions:
             pos.undraw()
@@ -144,11 +149,40 @@ class GameWindow:   # This controls the UI and button functionality
             position.draw(self.window)
             self.enemy_positions.append(position)
 
+    def _updateItemLocation(self):
+        items = self.character.getItemPositions()
+        for pos in self.item_positions:
+            pos.undraw()
+
+        for item_pos in items:
+            x, y = item_pos
+            position = Circle(self.display_matrix[x][y], 12)
+            position.setFill(color_rgb(70, 70, 160))
+            position.draw(self.window)
+            self.item_positions.append(position)
+
+    def _updateShopLocation(self):
+        shops = self.character.getShopLocation()
+        for pos in self.shop_positions:
+            pos.undraw()
+
+        for shop_pos in shops:
+            x, y = shop_pos
+            position = Circle(self.display_matrix[x][y], 12)
+            position.setFill(color_rgb(230, 230, 0))
+            position.draw(self.window)
+            self.shop_positions.append(position)
+
+    def _updateBarrierLocation(self):
+        pass
+
     def startWindow(self):
         while self.run_flag:
             self._updateLabels()
             self._updatePlayerLocation()
             self._updateEnemyLocation()
+            self._updateItemLocation()
+            self._updateShopLocation()
 
             p = self.window.getMouse()
 

@@ -13,7 +13,7 @@ class Character:    # This is responsible for the character attributes, and all 
 
         self.inventory = []
 
-        self.current_room = Room(0, 40, 0, 0, 0)     # Starting room rng, only enemy is currently implemented (nf)
+        self.current_room = Room(25, 25, 0, 0, 0)     # Starting room rng, only enemy is currently implemented (nf)
         self.rooms_cleared = 0          # Create a new list attribute which contains all the previous rooms?
         self.current_pos = [0, 0]
 
@@ -44,6 +44,18 @@ class Character:    # This is responsible for the character attributes, and all 
     def getItems(self):
         return self.current_room.items.items()
 
+    def getShops(self):
+        return self.current_room.shops
+
+    def getShopLocation(self):
+        return self.current_room.shops.values()
+
+    def getBarriers(self):
+        return self.current_room.barriers
+
+    def getBarrierLocation(self):
+        return self.current_room.barriers.values()
+
     def getXp(self):
         return self.level
 
@@ -60,9 +72,9 @@ class Character:    # This is responsible for the character attributes, and all 
         self.newPos(0, 1)
 
     def getNextRoom(self):      # rng will be in #room.py, the var below are only for XP level/difficulty
-        item_count = 50
-        enemy_count = 40
-        barrier_count = 50
+        item_count = 25
+        enemy_count = 25
+        barrier_count = 30
         shop_count = 0
         xp_level = 1
 
@@ -98,8 +110,13 @@ class Character:    # This is responsible for the character attributes, and all 
         print("Running attack enemy method")
         self.hp -= 10
 
-    def useItem(self, item):
-        pass
+    def useItem(self, item):                # here is where we need to implement the shop functions
+        print("Running use item method")
+        self.hp += 10
+
+    def useShop(self):                      # here is where
+        print("Running the use shop method")
+        self.gold -= 10
 
     def newPos(self, x, y):
         new_x, new_y = self.current_pos
