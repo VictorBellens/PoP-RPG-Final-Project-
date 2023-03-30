@@ -188,14 +188,10 @@ class GameWindow:   # This controls the UI and button functionality
 
             for button in self.control_buttons:
                 if button.clicked(p):
-                    # if button.active:       # Will be useful later
-                    #     button.deactivate()
                     button.deactivate()
                     self.log[datetime.now()] = button.getLabel()[0]
                     action = button.getAction()
                     action()
-                    # if not button.active:
-                    #     button.activate()
                     button.activate()
 
     def quit(self):
