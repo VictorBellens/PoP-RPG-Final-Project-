@@ -17,7 +17,7 @@ class Room:     # This is responsible for the room information such as enemy/ite
 
         self.items = {}
         self.enemies = {}
-        self.shops = {Shop(xp_level): [3, 3]}
+        self.shops = {}
         self.barriers = {}                          # could be for door/window/obstruction/bushes/etc.
         self.blocked = [[0, 0], self.matrix[-1]]    # blocks where items/enemies CANNOT be placed
 
@@ -55,7 +55,7 @@ class Room:     # This is responsible for the room information such as enemy/ite
 
     def __setShopCount(self, shop_chance, xp_level):
         if shop_chance == 100:
-            self.shops[Shop(xp_level)] = self.locationGenerator()   # Shop() is non-functional
+            self.shops[Shop(xp_level)] = self.locationGenerator()
 
     def locationGenerator(self):
         max_x = int(len(self.matrix)/8)

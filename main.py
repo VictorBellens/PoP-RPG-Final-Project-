@@ -137,7 +137,7 @@ class GameWindow:   # This controls the UI and button functionality
         self.player_position.setFill(color_rgb(0, 0, 0))
         self.player_position.draw(self.window)
 
-    def _updateEnemyLocation(self):                         # It is likely that we can change the update methods into 1
+    def _updateEnemyLocation(self):                         # It is likely that we can replace all the updatesItem/Enemy
         enemies = self.character.getEnemyPositions()
         for pos in self.enemy_positions:
             pos.undraw()
@@ -162,7 +162,7 @@ class GameWindow:   # This controls the UI and button functionality
             self.item_positions.append(position)
 
     def _updateShopLocation(self):
-        shops = self.character.getShopLocation()
+        shops = self.character.getShopPositions()
         for pos in self.shop_positions:
             pos.undraw()
 

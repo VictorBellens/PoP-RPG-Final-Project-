@@ -13,7 +13,7 @@ class Character:    # This is responsible for the character attributes, and all 
 
         self.inventory = []
 
-        self.current_room = Room(25, 25, 0, 0, 0)     # Starting room rng, only enemy is currently implemented (nf)
+        self.current_room = Room(25, 25, 0, 0, 100)     # Starting room rng, only enemy is currently implemented (nf)
         self.rooms_cleared = 0          # Create a new list attribute which contains all the previous rooms?
         self.current_pos = [0, 0]
 
@@ -47,7 +47,7 @@ class Character:    # This is responsible for the character attributes, and all 
     def getShops(self):
         return self.current_room.shops
 
-    def getShopLocation(self):
+    def getShopPositions(self):
         return self.current_room.shops.values()
 
     def getBarriers(self):
@@ -75,7 +75,7 @@ class Character:    # This is responsible for the character attributes, and all 
         item_count = 25
         enemy_count = 25
         barrier_count = 30
-        shop_count = 0
+        shop_count = 100
         xp_level = 1
 
         if self.rooms_cleared % 2 == 0:      # Change this to a higher number later
@@ -106,6 +106,14 @@ class Character:    # This is responsible for the character attributes, and all 
                     self.useItem(item)
                     break
 
+        elif self.current_pos in (sps := self.getShopPositions()):
+            print("Shop encountered")
+            for pos in sps:
+                if pos == self.current_pos:
+                    shop = self.getShops()
+                    self.useShop(shop)
+                    break
+
     def attackEnemy(self, enemy):           # here is where we need to implement the attack functions.
         print("Running attack enemy method")
         self.hp -= 10
@@ -114,7 +122,7 @@ class Character:    # This is responsible for the character attributes, and all 
         print("Running use item method")
         self.hp += 10
 
-    def useShop(self):                      # here is where
+    def useShop(self, shop):                      # here is where
         print("Running the use shop method")
         self.gold -= 10
 
