@@ -16,7 +16,7 @@ class Room:     # This is responsible for the room information such as enemy/ite
                        [7, 0], [7, 1], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6], [7, 7]]
 
         self.items = {}
-        self.enemies = {}
+        self.enemies = {Enemy(): [0, 1]}
         self.shops = {}
         self.barriers = {}                          # could be for door/window/obstruction/bushes/etc.
         self.blocked = [[0, 0], self.matrix[-1]]    # blocks where items/enemies CANNOT be placed
@@ -68,6 +68,15 @@ class Room:     # This is responsible for the room information such as enemy/ite
 
         self.blocked.append([x, y])
         return [x, y]
+
+    def removeEnemy(self, enemy):
+        self.enemies.pop(enemy)
+
+    def removeItem(self, item):
+        self.items.pop(item)
+
+    def removeShop(self, shop):
+        self.shops.pop(shop)
 
     def getStartingPos(self):
         return self.matrix[0]

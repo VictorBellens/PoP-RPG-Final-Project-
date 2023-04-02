@@ -10,7 +10,7 @@ from room import Room
 
 class GameWindow:   # This controls the UI and button functionality
     def __init__(self, log):
-        self.window = GraphWin('RPG', 850, 600)     # DO NOT CHANGE WINDOW DIMENSIONS
+        self.window = GraphWin('RPG', 600, 600)     # Window now set to 600x600
         self.rooms = []
         self.character = Character()
 
@@ -30,11 +30,10 @@ class GameWindow:   # This controls the UI and button functionality
         self.pickup_buttons = []
         self.shop_buttons = []
         self.inventory_buttons = []
-        self.__drawActionWindow()
-
         self.labels = []
         self.control_buttons = []
-        # self.__generateRooms()    # This is obsolete
+
+        self.__drawActionWindow()
         self.__drawControlButtons()
         self.__drawRoomGrid()
 
@@ -99,8 +98,8 @@ class GameWindow:   # This controls the UI and button functionality
 
         self.control_buttons.append(Button(self.window, Point(75, 530), 40, 40, 'quit', self.quit))    # quit game
 
-        for n in self.control_buttons:
-            n.activate()
+        for button in self.control_buttons:
+            button.activate()
 
     def _updateLabels(self):
         for label in self.labels:
@@ -204,5 +203,5 @@ class GameWindow:   # This controls the UI and button functionality
 
 
 if __name__ == '__main__':
-    gw = GameWindow(log=True)
+    gw = GameWindow(log=False)
     gw.startWindow()

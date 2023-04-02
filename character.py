@@ -1,11 +1,12 @@
 from room import Room
+from actionWindows import AttackWindow, ShopWindow, SettingsWindow, InventoryWindow
 
 
 class Character:    # This is responsible for the character attributes, and all methods tied to room, items, enemy, etc.
     def __init__(self):
         self.hp = 100       # these are all character attributes we can add more if we want more complexity
         self.max_hp = 100
-        self.atk = None
+        self.atk = 50           # debugging for AttackWindow
         self.name = None
         self.gold = 100
         self.level = None
@@ -37,6 +38,21 @@ class Character:    # This is responsible for the character attributes, and all 
 
     def getEnemies(self):
         return self.current_room.enemies.items()
+
+    def getEnemy(self, pos):
+        for enemy, position in self.current_room.enemies.items():
+            if position == pos:
+                return enemy
+
+    def getItem(self, pos):
+        for item, position in self.current_room.items.items():
+            if position == pos:
+                return item
+
+    def getShop(self, pos):
+        for shop, position in self.current_room.shops.items():
+            if position == pos:
+                return shop
 
     def getItemPositions(self):
         return self.current_room.items.values()
@@ -94,7 +110,7 @@ class Character:    # This is responsible for the character attributes, and all 
             print("Enemy encountered")
             for pos in eps:
                 if pos == self.current_pos:
-                    current_enemy = self.getEnemies()   # this needs changing?
+                    current_enemy = self.getEnemy(pos)
                     self.attackEnemy(current_enemy)
                     break
 
@@ -102,7 +118,7 @@ class Character:    # This is responsible for the character attributes, and all 
             print("Item encountered")
             for pos in ips:
                 if pos == self.current_pos:
-                    item = self.getItems()
+                    item = self.getItem(pos)
                     self.useItem(item)
                     break
 
@@ -110,21 +126,41 @@ class Character:    # This is responsible for the character attributes, and all 
             print("Shop encountered")
             for pos in sps:
                 if pos == self.current_pos:
-                    shop = self.getShops()
+                    shop = self.getShop(pos)
                     self.useShop(shop)
                     break
 
     def attackEnemy(self, enemy):           # here is where we need to implement the attack functions.
         print("Running attack enemy method")
-        self.hp -= 10
+        enemyAttack = AttackWindow(self, enemy)
+        enemyAttack.startFight()
+        if enemyAttack.getResult():
+            self.current_room.removeEnemy(enemy)
 
     def useItem(self, item):                # here is where we need to implement the shop functions
         print("Running use item method")
         self.hp += 10
+        res = item.useItem()
+        if res == 1:
+            print("Item used successfully")
+            self.current_room.removeItem(item)
+        elif res == 0:
+            print("Item not used successfully")
+        elif isinstance(res, Exception):
+            raise res
 
     def useShop(self, shop):                      # here is where
         print("Running the use shop method")
         self.gold -= 10
+
+        res = shop.useShop()
+        if res == 1:
+            print("Shop used successfully")
+            self.current_room.removeShop(shop)
+        elif res == 0:
+            print("Shop not used successfully")
+        elif isinstance(res, Exception):
+            raise res
 
     def newPos(self, x, y):
         new_x, new_y = self.current_pos

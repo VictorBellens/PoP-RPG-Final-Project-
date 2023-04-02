@@ -2,6 +2,9 @@ class Item:
     def __init__(self):     # This will contain the attributes of the item and the usage method.
         pass
 
+    def useItem(self):
+        return 1
+
 
 class Barrier:
     def __init__(self):     # This will contain the attributes of a barrier and the usage method.
@@ -14,3 +17,6 @@ class Shop:
 
     def __setupShopItems(self):
         pass
+
+    def useShop(self):
+        return 1
