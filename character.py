@@ -9,7 +9,7 @@ class Character:    # This is responsible for the character attributes, and all 
         self.atk = 50           # debugging for AttackWindow
         self.name = None
         self.gold = 100
-        self.level = None
+        self.level = 1
         self.to_next_level = 0/100
 
         self.inventory = []
@@ -99,6 +99,11 @@ class Character:    # This is responsible for the character attributes, and all 
 
         self.current_room = Room(item_count, enemy_count, barrier_count, shop_count, xp_level)
 
+    def checkLevel(self):
+        if self.to_next_level >= 1:
+            self.level += 1
+            self.to_next_level = 0/100
+
     def performAction(self):
         if self.current_pos == self.current_room.matrix[-1]:
             print("Moving to new room...")
@@ -129,6 +134,8 @@ class Character:    # This is responsible for the character attributes, and all 
                     shop = self.getShop(pos)
                     self.useShop(shop)
                     break
+
+        self.checkLevel()
 
     def attackEnemy(self, enemy):           # here is where we need to implement the attack functions.
         print("Running attack enemy method")

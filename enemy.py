@@ -24,7 +24,6 @@ class Enemy:
         return self.name
 
 
-
 class Boss(Enemy):
     def __init__(self):     # This will be responsible for the boss attack attributes/rewards/etc.
         Enemy.__init__(self)

@@ -74,10 +74,22 @@ class AttackWindow:
         pass
 
     def _winDisplay(self):
+        gold_obtained = self.enemy.lvl * 10
+        xp_obtained = self.enemy.lvl * 5
+
+        self.character.gold += gold_obtained
+        self.character.to_next_level += xp_obtained/100
+
         win_text = Text(Point(200, 75), 'Enemy Killed!')
         win_text.draw(self.window)
-        p = self.window.getMouse()
 
+        gold_text = Text(Point(200, 350), f'Gold obtained: {gold_obtained}')
+        gold_text.draw(self.window)
+
+        xp_text = Text(Point(200, 370), f'XP obtained: {xp_obtained}')
+        xp_text.draw(self.window)
+
+        p = self.window.getMouse()
         if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:
             self.run_flag = False
             self.window.close()
@@ -88,8 +100,8 @@ class AttackWindow:
     def startFight(self):
         while self.run_flag:
             self._updateHealth()
+
             if self.enemy.hp <= 0:
-                self.character.gold += 10
                 self._winDisplay()
 
             try:

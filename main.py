@@ -106,9 +106,11 @@ class GameWindow:   # This controls the UI and button functionality
             label.undraw()
 
         hp, max_hp = self.character.getHp()
+        level = self.character.level
         gold = self.character.getGold()
         room_number = self.character.getRoomNumber()
-        converted = ((hp/max_hp) * 90) + 90
+        hp_converted = ((hp/max_hp) * 90) + 90
+        xp_converted = 100 + (self.character.to_next_level * 400)
 
         hp_text = Text(Point(65, 420), 'HP')
         hp_text.draw(self.window)
@@ -117,17 +119,28 @@ class GameWindow:   # This controls the UI and button functionality
         max_hp_rect.setFill(color_rgb(226, 226, 226))
         max_hp_rect.draw(self.window)
 
-        hp_rect = Rectangle(Point(90, 410), Point(converted, 430))
+        hp_rect = Rectangle(Point(90, 410), Point(hp_converted, 430))
         hp_rect.setFill(color_rgb(140, 255, 167))
         hp_rect.draw(self.window)
+
+        xp_max_rect = Rectangle(Point(100, 40), Point(500, 45))
+        xp_max_rect.setFill(color_rgb(223, 223, 223))
+        xp_max_rect.draw(self.window)
+
+        xp_rect = Rectangle(Point(100, 40), Point(xp_converted, 45))
+        xp_rect.setFill('green')
+        xp_rect.draw(self.window)
+
+        xp_text = Text(Point(300, 30), f'{level}')
+        xp_text.draw(self.window)
 
         gold_text = Text(Point(86, 450), f'Gold: {gold}')
         gold_text.draw(self.window)
 
-        rooms_text = Text(Point(80, 20), f'Rooms cleared: {room_number}')
+        rooms_text = Text(Point(550, 550), f'RC: {room_number}')
         rooms_text.draw(self.window)
 
-        self.labels = [hp_text, hp_rect, max_hp_rect, gold_text, rooms_text]
+        self.labels = [hp_text, hp_rect, max_hp_rect, gold_text, rooms_text, xp_text]
 
     def _updatePlayerLocation(self):  # can add smoother graphics here if we want (see #animation.py)
         x, y = self.character.getCurrentPos()
