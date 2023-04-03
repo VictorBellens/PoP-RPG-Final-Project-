@@ -1,10 +1,10 @@
 class Enemy:
-    def __init__(self):     # These are currently hard-coded
-        self.hp = 100
-        self.max_hp = 100
-        self.atk = 5
+    def __init__(self, chr_lvl):     # These are currently hard-coded
+        self.hp = 100 * chr_lvl
+        self.max_hp = 100 * chr_lvl
+        self.atk = 5 * chr_lvl
         self.name = 'Monster'
-        self.lvl = 1
+        self.lvl = chr_lvl
         self.is_dead = False
 
     def _checkIsDead(self):
@@ -25,5 +25,5 @@ class Enemy:
 
 
 class Boss(Enemy):
-    def __init__(self):     # This will be responsible for the boss attack attributes/rewards/etc.
-        Enemy.__init__(self)
+    def __init__(self, character_level):     # This will be responsible for the boss attack attributes/rewards/etc.
+        Enemy.__init__(self, character_level)

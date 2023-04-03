@@ -1,5 +1,5 @@
 import random
-from items import Item, Shop, Barrier
+from items import Shop, Barrier, HealthItem, AttackItem, MaxHealthItem
 from enemy import Enemy, Boss
 
 
@@ -16,38 +16,43 @@ class Room:     # This is responsible for the room information such as enemy/ite
                        [7, 0], [7, 1], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6], [7, 7]]
 
         self.items = {}
-        self.enemies = {Enemy(): [0, 1]}
+        self.enemies = {}
         self.shops = {}
         self.barriers = {}                          # could be for door/window/obstruction/bushes/etc.
         self.blocked = [[0, 0], self.matrix[-1]]    # blocks where items/enemies CANNOT be placed
 
         self.__setDifficulty(xp_level)
-        self.__setItemCount(item_count)
-        self.__setEnemyCount(enemy_count)
+        self.__setItemCount(item_count, xp_level)
+        self.__setEnemyCount(enemy_count, xp_level)
         self.__setShopCount(shop_count, xp_level)
-        self.__setBarrierCount(barrier_count)
+        self.__setBarrierCount(barrier_count, xp_level)
 
-        print(f"Number of items: {len(self.items)}\n"
+        print(f"\nNumber of items: {len(self.items)}\n"
               f"Number of enemies: {len(self.enemies)}\n"
-              f"Number of shops: {len(self.shops)}")    # for debug only
-        print(self.blocked)
+              f"Number of shops: {len(self.shops)}\n")    # for debug only
 
     def __setDifficulty(self, xp_level):
         pass
 
-    def __setItemCount(self, item_chance):
+    def __setItemCount(self, item_chance, level):
         items = round(item_chance / 10) * random.randint(1, 3)      # create more rng here...
 
         for n in range(items):
-            self.items[Item()] = self.locationGenerator()
+            chance = random.random()
+            if chance < 0.33:
+                self.items[AttackItem(level)] = self.locationGenerator()
+            elif chance < 0.66:
+                self.items[HealthItem(level)] = self.locationGenerator()
+            elif chance < 1:
+                self.items[MaxHealthItem(level)] = self.locationGenerator()
 
-    def __setEnemyCount(self, enemy_chance):
+    def __setEnemyCount(self, enemy_chance, level):
         enemies = round(enemy_chance / 10) * random.randint(1, 3)   # create more rng here...
 
         for n in range(enemies):
-            self.enemies[Enemy()] = self.locationGenerator()
+            self.enemies[Enemy(level)] = self.locationGenerator()
 
-    def __setBarrierCount(self, barrier_count):
+    def __setBarrierCount(self, barrier_count, level):
         barriers = round(barrier_count/10) * random.randint(1, 3)
 
         for n in range(barriers):

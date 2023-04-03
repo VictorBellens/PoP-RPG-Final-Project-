@@ -1,9 +1,34 @@
-class Item:
-    def __init__(self):     # This will contain the attributes of the item and the usage method.
-        pass
+class HealthItem:
+    def __init__(self, level):
+        self.name = 'HP'
+        self.health_added = 10 * level
+        self.is_selected = False
 
-    def useItem(self):
-        return 1
+    def getAttribute(self):
+        self.is_selected = True
+        return self.health_added
+
+
+class MaxHealthItem:
+    def __init__(self, level):
+        self.name = 'Max HP'
+        self.max_health_added = 10 * level
+        self.is_selected = False
+
+    def getAttribute(self):
+        self.is_selected = True
+        return self.max_health_added
+
+
+class AttackItem:
+    def __init__(self, level):
+        self.name = 'Attack'
+        self.attack_added = 5 * level
+        self.is_selected = False
+
+    def getAttribute(self):
+        self.is_selected = True
+        return self.attack_added
 
 
 class Barrier:

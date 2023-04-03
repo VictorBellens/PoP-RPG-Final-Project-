@@ -94,7 +94,7 @@ class GameWindow:   # This controls the UI and button functionality
 
         self.control_buttons.append(Button(self.window, Point(440, 450), 70, 40, 'action', sc.performAction))
         self.control_buttons.append(Button(self.window, Point(440, 490), 70, 40, 'inventory', sc.viewInventory))
-        self.control_buttons.append(Button(self.window, Point(440, 530), 70, 40, 'shop', sc.shop))   # tbc
+        self.control_buttons.append(Button(self.window, Point(440, 530), 70, 40, 'stats', sc.viewStats))   # tbc
 
         self.control_buttons.append(Button(self.window, Point(75, 530), 40, 40, 'quit', self.quit))    # quit game
 

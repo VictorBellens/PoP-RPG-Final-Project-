@@ -1,20 +1,22 @@
 from room import Room
-from actionWindows import AttackWindow, ShopWindow, SettingsWindow, InventoryWindow
+from actionWindows import AttackWindow, ShopWindow, SettingsWindow, InventoryWindow, ItemWindow, StatsWindow
 
 
 class Character:    # This is responsible for the character attributes, and all methods tied to room, items, enemy, etc.
     def __init__(self):
-        self.hp = 100       # these are all character attributes we can add more if we want more complexity
+        self.hp = 70       # these are all character attributes we can add more if we want more complexity
         self.max_hp = 100
         self.atk = 50           # debugging for AttackWindow
         self.name = None
         self.gold = 100
+        self.gold_accumulated = 0
+        self.enemies_killed = 0
         self.level = 1
         self.to_next_level = 0/100
 
         self.inventory = []
 
-        self.current_room = Room(25, 25, 0, 0, 100)     # Starting room rng, only enemy is currently implemented (nf)
+        self.current_room = Room(25, 25, 0, 0, self.level)
         self.rooms_cleared = 0          # Create a new list attribute which contains all the previous rooms?
         self.current_pos = [0, 0]
 
@@ -92,12 +94,11 @@ class Character:    # This is responsible for the character attributes, and all 
         enemy_count = 25
         barrier_count = 30
         shop_count = 100
-        xp_level = 1
 
         if self.rooms_cleared % 2 == 0:      # Change this to a higher number later
             shop_count = 100
 
-        self.current_room = Room(item_count, enemy_count, barrier_count, shop_count, xp_level)
+        self.current_room = Room(item_count, enemy_count, barrier_count, shop_count, self.level)
 
     def checkLevel(self):
         if self.to_next_level >= 1:
@@ -137,24 +138,50 @@ class Character:    # This is responsible for the character attributes, and all 
 
         self.checkLevel()
 
+    def viewInventory(self):
+        print("Viewing Inventory")
+        invView = InventoryWindow(self)
+        invView.viewInventory()
+
+    def viewStats(self):
+        print("Viewing stats")
+        statView = StatsWindow(self)
+        statView.viewStats()
+
     def attackEnemy(self, enemy):           # here is where we need to implement the attack functions.
         print("Running attack enemy method")
         enemyAttack = AttackWindow(self, enemy)
         enemyAttack.startFight()
         if enemyAttack.getResult():
+            self.enemies_killed += 1
             self.current_room.removeEnemy(enemy)
 
     def useItem(self, item):                # here is where we need to implement the shop functions
         print("Running use item method")
-        self.hp += 10
-        res = item.useItem()
-        if res == 1:
-            print("Item used successfully")
+        itemUse = ItemWindow(self, item)
+        itemUse.useItem()
+        if itemUse.getResult():
             self.current_room.removeItem(item)
-        elif res == 0:
-            print("Item not used successfully")
-        elif isinstance(res, Exception):
-            raise res
+
+    def useHealthItem(self, val):
+        if self.hp + val > self.max_hp:
+            print("Exceeds max health")
+            self.hp = self.max_hp
+        else:
+            print("Hp increased")
+            self.hp += val
+
+    def useMaxHealthItem(self, val):
+        print("Max health increased")
+        self.max_hp += val
+
+    def useAttackItem(self, val):
+        print("Attack increased")
+        self.atk += val
+
+    def storeInInventory(self, item):
+        print("Item stored in inventory")
+        self.inventory.append(item)
 
     def useShop(self, shop):                      # here is where
         print("Running the use shop method")
@@ -178,5 +205,3 @@ class Character:    # This is responsible for the character attributes, and all 
         else:
             self.current_pos = [new_x, new_y]
 
-    def viewInventory(self):
-        pass
