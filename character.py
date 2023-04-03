@@ -1,5 +1,5 @@
 from room import Room
-from actionWindows import AttackWindow, ShopWindow, SettingsWindow, InventoryWindow, ItemWindow, StatsWindow
+from actionWindows import AttackWindow, ShopWindow, InventoryWindow, ItemWindow, StatsWindow
 
 
 class Character:    # This is responsible for the character attributes, and all methods tied to room, items, enemy, etc.
@@ -16,7 +16,7 @@ class Character:    # This is responsible for the character attributes, and all 
         self.is_shielded = False
 
         self.ultimate_attribute = 500
-        self.ultimate_available = True
+        self.ultimate_available = 1
 
         self.inventory = []
 
@@ -103,7 +103,7 @@ class Character:    # This is responsible for the character attributes, and all 
             shop_count = 100
 
         self.current_room = Room(item_count, enemy_count, barrier_count, shop_count, self.level)
-        self.ultimate_available = True
+        self.ultimate_available = 1
 
     def checkLevel(self):
         if self.to_next_level >= 1:
@@ -147,11 +147,13 @@ class Character:    # This is responsible for the character attributes, and all 
         print("Viewing Inventory")
         invView = InventoryWindow(self)
         invView.viewInventory()
+        del invView
 
     def viewStats(self):
         print("Viewing stats")
         statView = StatsWindow(self)
         statView.viewStats()
+        del statView
 
     def attackEnemy(self, enemy):           # here is where we need to implement the attack functions.
         print("Running attack enemy method")
@@ -160,6 +162,7 @@ class Character:    # This is responsible for the character attributes, and all 
         if enemyAttack.getResult():
             self.enemies_killed += 1
             self.current_room.removeEnemy(enemy)
+        del enemyAttack
 
     def useItem(self, item):                # here is where we need to implement the shop functions
         print("Running use item method")
@@ -167,6 +170,7 @@ class Character:    # This is responsible for the character attributes, and all 
         itemUse.useItem()
         if itemUse.getResult():
             self.current_room.removeItem(item)
+        del itemUse
 
     def useHealthItem(self, val):
         if self.hp + val > self.max_hp:

@@ -283,24 +283,6 @@ class InventoryWindow:
             self.window.close()
 
 
-class SettingsWindow:
-    def __init__(self):
-        self.window = None
-        self.buttons = [Button(self.window, Point(665, 500), 60, 40, '', None),
-                        Button(self.window, Point(665, 500), 60, 40, '', None),
-                        Button(self.window, Point(665, 500), 60, 40, '', None),
-                        Button(self.window, Point(665, 500), 60, 40, '', None)]
-
-
-class ShopWindow:
-    def __init__(self):
-        self.window = None
-        self.buttons = [Button(self.window, Point(665, 500), 60, 40, '', None),
-                        Button(self.window, Point(665, 500), 60, 40, '', None),
-                        Button(self.window, Point(665, 500), 60, 40, '', None),
-                        Button(self.window, Point(665, 500), 60, 40, '', None)]
-
-
 class StatsWindow:
     def __init__(self, character):
         self.window = GraphWin('Stats', 400, 400)
@@ -336,3 +318,12 @@ class StatsWindow:
             return
         if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:
             self.window.close()
+
+
+class ShopWindow:
+    def __init__(self):
+        self.window = None
+        self.buttons = [Button(self.window, Point(665, 500), 60, 40, '', None),
+                        Button(self.window, Point(665, 500), 60, 40, '', None),
+                        Button(self.window, Point(665, 500), 60, 40, '', None),
+                        Button(self.window, Point(665, 500), 60, 40, '', None)]

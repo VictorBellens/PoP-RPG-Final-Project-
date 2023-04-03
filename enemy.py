@@ -17,7 +17,6 @@ class Enemy:
 
     def getResponse(self, character, action):       # str(action)[29] represents which action the user used (a/d/u/f)
         response = str(action)[29]
-        print(f"response = {response}")
         chance = random.random()
 
         if self.no_attack_for != 0:
@@ -43,8 +42,8 @@ class Enemy:
                 return f'-{self.atk} HP', 'red'
 
             elif response == 'u':
-                if character.ultimate_available:
-                    character.ultimate_available = False
+                if character.ultimate_available != 0:
+                    character.ultimate_available -= 1
                     self.hp -= character.ultimate_attribute
 
                     return f'Ultimate', 'green'

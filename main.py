@@ -10,7 +10,7 @@ from room import Room
 
 class GameWindow:   # This controls the UI and button functionality
     def __init__(self, log):
-        self.window = GraphWin('RPG', 600, 600)     # Window now set to 600x600
+        self.window = GraphWin('RPG', 600, 600)     # Window set to 600x600
         self.rooms = []
         self.character = Character()
 
@@ -33,13 +33,8 @@ class GameWindow:   # This controls the UI and button functionality
         self.labels = []
         self.control_buttons = []
 
-        self.__drawActionWindow()
         self.__drawControlButtons()
         self.__drawRoomGrid()
-
-    def __drawActionWindow(self):   # this will require other methods in the future (for each action)
-        rect = Rectangle(Point(600, 50), Point(825, 550))
-        rect.draw(self.window)
 
     def __drawRoomGrid(self):
         margin_x = 50
@@ -74,29 +69,20 @@ class GameWindow:   # This controls the UI and button functionality
 
             self.display_matrix.append(row)
 
-    def __generateRooms(self):  # New method in Room() causes this to be obsolete
-        for room in range(11):  # currently creates 10 rooms
-            shop_count = 100 if self.character.rooms_cleared % 5 == 0 else 0
-            barrier_count = random.randint(0, 101)
-            enemy_count = random.randint(0, 101)
-            item_count = random.randint(0, 101)
-
-            self.rooms.append(Room(item_count, enemy_count, barrier_count, shop_count, self.character.getXp()))
-
     def __drawControlButtons(self):
         Rectangle(Point(50, 50), Point(550, 400)).draw(self.window)  # where the game matrix will be displayed
         sc = self.character
 
-        self.control_buttons.append(Button(self.window, Point(300, 450), 40, 40, '↑', sc.moveNorth))
-        self.control_buttons.append(Button(self.window, Point(300, 530), 40, 40, '↓', sc.moveSouth))
-        self.control_buttons.append(Button(self.window, Point(260, 490), 40, 40, '←', sc.moveEast))
-        self.control_buttons.append(Button(self.window, Point(340, 490), 40, 40, '→', sc.moveWest))
+        self.control_buttons.append(Button(self.window, Point(300, 450), 40, 40, '↑', sc.moveNorth, 'Up'))
+        self.control_buttons.append(Button(self.window, Point(300, 530), 40, 40, '↓', sc.moveSouth, 'Down'))
+        self.control_buttons.append(Button(self.window, Point(260, 490), 40, 40, '←', sc.moveEast, 'Left'))
+        self.control_buttons.append(Button(self.window, Point(340, 490), 40, 40, '→', sc.moveWest, 'Right'))
 
-        self.control_buttons.append(Button(self.window, Point(440, 450), 70, 40, 'action', sc.performAction))
-        self.control_buttons.append(Button(self.window, Point(440, 490), 70, 40, 'inventory', sc.viewInventory))
-        self.control_buttons.append(Button(self.window, Point(440, 530), 70, 40, 'stats', sc.viewStats))   # tbc
+        self.control_buttons.append(Button(self.window, Point(440, 450), 70, 40, 'action', sc.performAction, 'Return'))
+        self.control_buttons.append(Button(self.window, Point(440, 490), 70, 40, 'inventory', sc.viewInventory, 'i'))
+        self.control_buttons.append(Button(self.window, Point(440, 530), 70, 40, 'stats', sc.viewStats, 's'))   # tbc
 
-        self.control_buttons.append(Button(self.window, Point(75, 530), 40, 40, 'quit', self.quit))    # quit game
+        self.control_buttons.append(Button(self.window, Point(75, 530), 40, 40, 'quit', self.quit, 'q'))    # quit game
 
         for button in self.control_buttons:
             button.activate()
@@ -194,18 +180,24 @@ class GameWindow:   # This controls the UI and button functionality
                 self.window.close()
                 self.character.viewStats()
             try:
-                p = self.window.getMouse()
+                k, p = '', None
+                while k == '' and p is None:
+                    p = self.window.checkMouse()
+                    k = self.window.checkKey()          # no fucking clue why this shit doesn't work
+
             except GraphicsError:
                 print("Game ended...")
                 break
 
             for button in self.control_buttons:
-                if button.clicked(p):
+                if (p is not None and button.clicked(p)) or button.pressed(k):
                     button.deactivate()
                     self.log[datetime.now()] = button.getLabel()[0]
                     action = button.getAction()
                     action()
                     button.activate()
+
+                    self.window.update()
 
     def quit(self):
         if self.save_log:
@@ -214,6 +206,10 @@ class GameWindow:   # This controls the UI and button functionality
             for t, n in self.log.items():
                 print(f'{str(t)[11:19]} | {n}')     # write this into a file later instead of console.
         self.run_flag = False
+
+    def getInput(self):
+        pass
+
 
 
 if __name__ == '__main__':

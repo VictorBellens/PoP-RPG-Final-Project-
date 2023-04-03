@@ -9,7 +9,7 @@ class Button:
     # and deactivate() methods. The clicked(p) method
     # returns true if the button is active and p is inside it.
 
-    def __init__(self, win, center, width, height, label, action):
+    def __init__(self, win, center, width, height, label, action, *args):
         # Creates a rectangular button, eg:
         # qb = Button(myWin, centerPoint, width, height, 'Quit')
 
@@ -26,6 +26,10 @@ class Button:
         self.label.draw(win)
         self.deactivate()
 
+        try:
+            self.key = args[0]
+        except IndexError:
+            pass
         self.active = None                                          # added active to __init__
         self.action = action                                        # added action
 
@@ -33,6 +37,9 @@ class Button:
         # Returns true if button active and p is inside
         return (self.xmin <= p.getX() <= self.xmax and              # removed 'if button active and'
                 self.ymin <= p.getY() <= self.ymax)
+
+    def pressed(self, k):
+        return self.key == k
 
     def getLabel(self):
         # Returns the label string of this button.
