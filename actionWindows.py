@@ -71,7 +71,7 @@ class AttackWindow:
 
     def __defend(self):
         chance = random.random()
-        if chance > 0.3:
+        if chance > 0.2:
             self.character.is_shielded = True
             self._newEnemyLabel(f'Shielded', 'green')
         else:
