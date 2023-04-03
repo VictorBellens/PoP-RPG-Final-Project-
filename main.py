@@ -193,8 +193,11 @@ class GameWindow:   # This controls the UI and button functionality
             if self.character.hp <= 0:          # NEEDS MORE WORK
                 self.window.close()
                 self.character.viewStats()
-
-            p = self.window.getMouse()
+            try:
+                p = self.window.getMouse()
+            except GraphicsError:
+                print("Game ended...")
+                break
 
             for button in self.control_buttons:
                 if button.clicked(p):
@@ -203,7 +206,6 @@ class GameWindow:   # This controls the UI and button functionality
                     action = button.getAction()
                     action()
                     button.activate()
-
 
     def quit(self):
         if self.save_log:

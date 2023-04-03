@@ -108,7 +108,7 @@ class Character:    # This is responsible for the character attributes, and all 
     def checkLevel(self):
         if self.to_next_level >= 1:
             self.level += 1
-            self.to_next_level = 0/100
+            self.to_next_level = self.to_next_level - 1
 
     def performAction(self):
         if self.current_pos == self.current_room.matrix[-1]:

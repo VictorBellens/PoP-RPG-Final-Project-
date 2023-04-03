@@ -127,7 +127,7 @@ class AttackWindow:
 
     def _winDisplay(self):
         gold_obtained = self.enemy.lvl * 10
-        xp_obtained = self.enemy.lvl * 10
+        xp_obtained = self.enemy.lvl * 15                # xp level increase here
 
         self.character.gold += gold_obtained
         self.character.gold_accumulated += gold_obtained
@@ -257,7 +257,6 @@ class ItemWindow:
                     action(self.item)
                     self._StoreDisplay()
                     break
-            break
 
     def getResult(self):
         return self.item.is_selected
