@@ -4,15 +4,19 @@ from actionWindows import AttackWindow, ShopWindow, SettingsWindow, InventoryWin
 
 class Character:    # This is responsible for the character attributes, and all methods tied to room, items, enemy, etc.
     def __init__(self):
-        self.hp = 70       # these are all character attributes we can add more if we want more complexity
         self.max_hp = 100
-        self.atk = 50           # debugging for AttackWindow
+        self.hp = self.max_hp
+        self.atk = 10           # debugging for AttackWindow
         self.name = None
         self.gold = 100
         self.gold_accumulated = 0
         self.enemies_killed = 0
         self.level = 1
         self.to_next_level = 0/100
+        self.is_shielded = False
+
+        self.ultimate_attribute = 500
+        self.ultimate_available = True
 
         self.inventory = []
 
@@ -99,6 +103,7 @@ class Character:    # This is responsible for the character attributes, and all 
             shop_count = 100
 
         self.current_room = Room(item_count, enemy_count, barrier_count, shop_count, self.level)
+        self.ultimate_available = True
 
     def checkLevel(self):
         if self.to_next_level >= 1:
@@ -174,6 +179,7 @@ class Character:    # This is responsible for the character attributes, and all 
     def useMaxHealthItem(self, val):
         print("Max health increased")
         self.max_hp += val
+        self.hp += val/2
 
     def useAttackItem(self, val):
         print("Attack increased")

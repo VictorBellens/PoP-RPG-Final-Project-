@@ -1,5 +1,6 @@
 from graphicInterface.button import Button
 from graphicInterface.graphics import *
+import random
 
 
 class AttackWindow:
@@ -19,6 +20,10 @@ class AttackWindow:
                         Button(self.window, Point(350, 300), 60, 40, 'Flee', self.__flee)]
         self.labels = [Text(Point(75, 80), 'You'),
                        Text(Point(325, 80), f'{self.enemy.getName()}')]
+
+        self.enemy_labels = []
+        self.player_labels = []
+        self.label_count = 1
 
         self.__setupAll()
         self._updateHealth()
@@ -57,18 +62,59 @@ class AttackWindow:
         enemy_health.draw(self.window)
 
     def __attack(self):
-        pass
+        chance = random.random()
+        if chance > 0.3:
+            self.enemy.hp -= self.character.atk
+            self._newEnemyLabel(f'-{self.character.atk} HP', 'green')
+        else:
+            self._newEnemyLabel(f'Missed', 'red')
 
     def __defend(self):
-        pass
+        chance = random.random()
+        if chance > 0.3:
+            self.character.is_shielded = True
+            self._newEnemyLabel(f'Shielded', 'green')
+        else:
+            self._newEnemyLabel(f'Missed', 'red')
 
     def __flee(self):
         print("Fleeing...")
         self.run_flag = False
         self.window.close()
 
+        return 0
+
     def __ultimate(self):
-        pass
+        if self.character.ultimate_available:
+            self._newEnemyLabel(f'Ultimate', 'green')
+        else:
+            self._newEnemyLabel(f'Unavailable', 'red')
+
+    def _newEnemyLabel(self, label, color):
+        if self.label_count > 5:
+            for labels in self.enemy_labels:
+                labels.undraw()
+            self.enemy_labels = []
+            self.label_count = 1
+
+        y_pos = (self.label_count * 20) + 90
+        text = Text(Point(325, y_pos), label)
+        text.setFill(color)
+        text.draw(self.window)
+        self.enemy_labels.append(text)
+
+    def _newPlayerLabel(self, label, color):
+        if self.label_count > 5:
+            for labels in self.enemy_labels:
+                labels.undraw()
+            self.player_labels = []
+            self.label_count = 1
+
+        y_pos = (self.label_count * 20) + 90
+        text = Text(Point(75, y_pos), label)
+        text.setFill(color)
+        text.draw(self.window)
+        self.enemy_labels.append(text)
 
     def _updateLabels(self):
         pass
@@ -117,6 +163,9 @@ class AttackWindow:
             if self.enemy.hp <= 0:
                 self._winDisplay()
 
+            elif self.character.hp <= 0:
+                self._loseDisplay()
+
             try:
                 p = self.window.getMouse()
             except GraphicsError:
@@ -125,8 +174,13 @@ class AttackWindow:
             for button in self.buttons:
                 if button.clicked(p):
                     action = button.getAction()
-                    action()
-                    self.enemy.getResponse(self.character, action)
+                    res = action()
+                    if res == 0:
+                        break
+                    label, color = self.enemy.getResponse(self.character, action)
+                    self._newPlayerLabel(label, color)
+                    self.label_count += 1
+                    self.enemy.checkIsDead()
 
     def getResult(self):
         return self.enemy.is_dead
@@ -216,8 +270,10 @@ class InventoryWindow:
         self.buttons = []
 
     def viewInventory(self):
-        temp = Text(Point(200, 200), 'This is where we view the inventory')
+        temp = Text(Point(200, 200), 'This is where we view the inventory (temp)')
         temp.draw(self.window)
+        temp1 = Text(Point(200, 215), f'{self.character.inventory}')
+        temp1.draw(self.window)
 
         try:
             p = self.window.getMouse()
