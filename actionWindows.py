@@ -1,6 +1,7 @@
 from graphicInterface.button import Button
 from graphicInterface.graphics import *
 import random
+from common import handle_input
 
 
 class AttackWindow:
@@ -142,7 +143,7 @@ class AttackWindow:
         xp_text = Text(Point(200, 370), f'XP obtained: {xp_obtained}')
         xp_text.draw(self.window)
 
-        p = self.window.getMouse()
+        p = self.window.getMouse()                                      # try/except
         if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:
             self.run_flag = False
             self.window.close()
@@ -152,7 +153,7 @@ class AttackWindow:
         lose_text.draw(self.window)
 
         p = self.window.getMouse()
-        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:
+        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:              # try/except
             self.run_flag = False
             self.window.close()
 
@@ -167,7 +168,7 @@ class AttackWindow:
                 self._loseDisplay()
 
             try:
-                p = self.window.getMouse()
+                p, k = handle_input(self.window)
             except GraphicsError:
                 break
 
@@ -220,8 +221,8 @@ class ItemWindow:
         lose_text = Text(Point(200, 70), f'{self.item.name} increased by {self.item.getAttribute()}!')
         lose_text.draw(self.window)
 
-        p = self.window.getMouse()
-        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:
+        p, k = handle_input(self.window)
+        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:       # try/except
             self.run_flag = False
             self.window.close()
 
@@ -231,8 +232,8 @@ class ItemWindow:
         lose_text = Text(Point(200, 75), f'{self.item.name} stored in inventory')
         lose_text.draw(self.window)
 
-        p = self.window.getMouse()
-        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:
+        p, k = handle_input(self.window)
+        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:       # try/except
             self.run_flag = False
             self.window.close()
 

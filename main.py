@@ -6,6 +6,7 @@ from datetime import datetime
 
 from character import Character
 from room import Room
+from common import handle_input
 
 
 class GameWindow:   # This controls the UI and button functionality
@@ -180,10 +181,7 @@ class GameWindow:   # This controls the UI and button functionality
                 self.window.close()
                 self.character.viewStats()
             try:
-                k, p = '', None
-                while k == '' and p is None:
-                    p = self.window.checkMouse()
-                    k = self.window.checkKey()          # no fucking clue why this shit doesn't work
+                p, k = handle_input(self.window)
 
             except GraphicsError:
                 print("Game ended...")
@@ -198,6 +196,7 @@ class GameWindow:   # This controls the UI and button functionality
                     button.activate()
 
                     self.window.update()
+            time.sleep(0.1)     # reduces CPU usage and stops the button from being spammed
 
     def quit(self):
         if self.save_log:
@@ -206,10 +205,6 @@ class GameWindow:   # This controls the UI and button functionality
             for t, n in self.log.items():
                 print(f'{str(t)[11:19]} | {n}')     # write this into a file later instead of console.
         self.run_flag = False
-
-    def getInput(self):
-        pass
-
 
 
 if __name__ == '__main__':
