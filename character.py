@@ -141,8 +141,6 @@ class Character:    # This is responsible for the character attributes, and all 
                     self.useShop(shop)
                     break
 
-        self.checkLevel()
-
     def viewInventory(self):
         print("Viewing Inventory")
         invView = InventoryWindow(self)
@@ -193,18 +191,10 @@ class Character:    # This is responsible for the character attributes, and all 
         print("Item stored in inventory")
         self.inventory.append(item)
 
-    def useShop(self, shop):                      # here is where
-        print("Running the use shop method")
-        self.gold -= 10
-
-        res = shop.useShop()
-        if res == 1:
-            print("Shop used successfully")
-            self.current_room.removeShop(shop)
-        elif res == 0:
-            print("Shop not used successfully")
-        elif isinstance(res, Exception):
-            raise res
+    def useShop(self, shop):
+        print("Using the shop")
+        shopUse = ShopWindow(self)
+        shopUse.useShop()
 
     def newPos(self, x, y):
         new_x, new_y = self.current_pos

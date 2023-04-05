@@ -1,7 +1,7 @@
 from graphicInterface.button import Button
 from graphicInterface.graphics import *
 import random
-from common import handle_input
+from common import handle_input, get_exit
 
 
 class AttackWindow:
@@ -143,24 +143,13 @@ class AttackWindow:
         xp_text = Text(Point(200, 370), f'XP obtained: {xp_obtained}')
         xp_text.draw(self.window)
 
-        self._getExit()
+        get_exit(self)
 
     def _loseDisplay(self):
         lose_text = Text(Point(200, 75), 'You Died!')
         lose_text.draw(self.window)
 
-        self._getExit()
-
-    def _getExit(self):
-        while True:
-            p, k = handle_input(self.window)
-            try:
-                if k == 'space' or (0 <= p.getX() <= 400 and 0 <= p.getY() <= 400):  # try/except
-                    self.run_flag = False
-                    self.window.close()
-                    break
-            except AttributeError:
-                continue
+        get_exit(self)
 
     def startFight(self):
         while self.run_flag:
@@ -206,8 +195,8 @@ class ItemWindow:
         self.sprite_window = Rectangle(Point(150, 100), Point(250, 200))
         self.sprite_window.draw(self.window)
 
-        self.buttons = [Button(self.window, Point(150, 300), 60, 40, 'Use', self.item_action, 'u'),
-                        Button(self.window, Point(250, 300), 60, 40, 'Store', self.character.storeInInventory, 'y')]
+        self.buttons = [Button(self.window, Point(150, 300), 60, 40, 'Use', self.item_action, '1'),
+                        Button(self.window, Point(250, 300), 60, 40, 'Store', self.character.storeInInventory, '2')]
         self.labels = []
 
         for button in self.buttons:
@@ -226,7 +215,7 @@ class ItemWindow:
         lose_text = Text(Point(200, 70), f'{self.item.name} increased by {self.item.getAttribute()}!')
         lose_text.draw(self.window)
 
-        self._getExit()
+        get_exit(self)
 
     def _StoreDisplay(self):
         self.run_flag = False
@@ -234,18 +223,7 @@ class ItemWindow:
         lose_text = Text(Point(200, 75), f'{self.item.name} stored in inventory')
         lose_text.draw(self.window)
 
-        self._getExit()
-
-    def _getExit(self):
-        while True:
-            p, k = handle_input(self.window)
-            try:
-                if k == 'space' or (0 <= p.getX() <= 400 and 0 <= p.getY() <= 400):  # try/except
-                    self.run_flag = False
-                    self.window.close()
-                    break
-            except AttributeError:
-                continue
+        get_exit(self)
 
     def useItem(self):
         text = Text(Point(200, 250), f'{self.item.name}')
@@ -285,13 +263,18 @@ class InventoryWindow:
         temp1 = Text(Point(200, 215), f'{self.character.inventory}')
         temp1.draw(self.window)
 
-        try:
+        get_exit(self)
+
+    def _getExit(self):
+        while True:
             p, k = handle_input(self.window)
-        except GraphicsError:
-            self.window.close()
-            return
-        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:
-            self.window.close()
+            try:
+                if k == 'space' or (0 <= p.getX() <= 400 and 0 <= p.getY() <= 400):  # try/except
+                    self.run_flag = False
+                    self.window.close()
+                    break
+            except AttributeError:
+                continue
 
 
 class StatsWindow:
@@ -322,19 +305,16 @@ class StatsWindow:
         for label in labels:
             label.draw(self.window)
 
-        try:
-            p, k = handle_input(self.window)
-        except GraphicsError:
-            self.window.close()
-            return
-        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:
-            self.window.close()
+        get_exit(self)
 
 
 class ShopWindow:
-    def __init__(self):
-        self.window = None
-        self.buttons = [Button(self.window, Point(665, 500), 60, 40, '', None),
-                        Button(self.window, Point(665, 500), 60, 40, '', None),
-                        Button(self.window, Point(665, 500), 60, 40, '', None),
-                        Button(self.window, Point(665, 500), 60, 40, '', None)]
+    def __init__(self, character):
+        self.window = GraphWin("Shop", 400, 400)
+        self.character = character
+
+        self.buttons = []
+
+    def useShop(self):
+        shop_level = self.character.level
+        get_exit(self)

@@ -1,13 +1,17 @@
 import keyboard
 import time
 
+"""VARS ETC."""
+log = {}
+
+
 """CONFIG FOR MACROS"""
 # MAIN CONTROLS
 north = 'up'
 south = 'down'
 east = 'right'
 west = 'left'
-action = 'return'
+action = 'return'   # this is actually "space" but doesn't work for some reason
 inventory = 'i'
 _quit = 'q'
 stats = 's'
@@ -71,3 +75,15 @@ def handle_input(window):
         time.sleep(0.1)
 
     return p, k
+
+
+def get_exit(obj):
+    while True:
+        p, k = handle_input(obj.window)
+        try:
+            if k == 'space' or (0 <= p.getX() <= 400 and 0 <= p.getY() <= 400):
+                obj.run_flag = False
+                obj.window.close()
+                break
+        except AttributeError:
+            continue

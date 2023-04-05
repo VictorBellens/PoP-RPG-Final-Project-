@@ -5,9 +5,7 @@ from graphicInterface.button import Button
 from datetime import datetime
 
 from character import Character
-from room import Room
-from common import handle_input
-import keyboard
+from common import handle_input, log
 
 
 class GameWindow:   # This controls the UI and button functionality
@@ -17,7 +15,6 @@ class GameWindow:   # This controls the UI and button functionality
         self.character = Character()
 
         self.run_flag = True
-        self.log = {}
         self.save_log = log
 
         # positions of items
@@ -80,7 +77,7 @@ class GameWindow:   # This controls the UI and button functionality
         self.control_buttons.append(Button(self.window, Point(260, 490), 40, 40, '←', sc.moveEast, 'Left'))
         self.control_buttons.append(Button(self.window, Point(340, 490), 40, 40, '→', sc.moveWest, 'Right'))
 
-        self.control_buttons.append(Button(self.window, Point(440, 450), 70, 40, 'action', sc.performAction, 'Return'))
+        self.control_buttons.append(Button(self.window, Point(440, 450), 70, 40, 'action', sc.performAction, 'space'))
         self.control_buttons.append(Button(self.window, Point(440, 490), 70, 40, 'inventory', sc.viewInventory, 'i'))
         self.control_buttons.append(Button(self.window, Point(440, 530), 70, 40, 'stats', sc.viewStats, 's'))   # tbc
 
@@ -90,6 +87,7 @@ class GameWindow:   # This controls the UI and button functionality
             button.activate()
 
     def _updateLabels(self):
+        self.character.checkLevel()
         for label in self.labels:
             label.undraw()
 
@@ -181,9 +179,9 @@ class GameWindow:   # This controls the UI and button functionality
             if self.character.hp <= 0:          # NEEDS MORE WORK
                 self.window.close()
                 self.character.viewStats()
+
             try:
                 p, k = handle_input(self.window)
-
             except GraphicsError:
                 print("Game ended...")
                 break
@@ -191,7 +189,7 @@ class GameWindow:   # This controls the UI and button functionality
             for button in self.control_buttons:
                 if (p is not None and button.clicked(p)) or button.pressed(k):
                     button.deactivate()
-                    self.log[datetime.now()] = button.getLabel()[0]
+                    log[datetime.now()] = button.getLabel()[0]
                     action = button.getAction()
                     action()
                     button.activate()
@@ -201,9 +199,9 @@ class GameWindow:   # This controls the UI and button functionality
 
     def quit(self):
         if self.save_log:
-            print(f'\nLog from {str(datetime.now())[:11]}\nTotal actions: {len(self.log)}\n')
+            print(f'\nLog from {str(datetime.now())[:11]}\nTotal actions: {len(log)}\n')
             print('  Time   | Action')
-            for t, n in self.log.items():
+            for t, n in log.items():
                 print(f'{str(t)[11:19]} | {n}')     # write this into a file later instead of console.
         self.run_flag = False
 
