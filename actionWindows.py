@@ -15,10 +15,10 @@ class AttackWindow:
         self.sprite_window = Rectangle(Point(150, 100), Point(250, 200))
         self.sprite_window.draw(self.window)
 
-        self.buttons = [Button(self.window, Point(50, 300), 60, 40, 'Attack', self.__attack),
-                        Button(self.window, Point(150, 300), 60, 40, 'Defend', self.__defend),
-                        Button(self.window, Point(250, 300), 60, 40, 'Ultimate', self.__ultimate),
-                        Button(self.window, Point(350, 300), 60, 40, 'Flee', self.__flee)]
+        self.buttons = [Button(self.window, Point(50, 300), 60, 40, 'Attack', self.__attack, '1'),
+                        Button(self.window, Point(150, 300), 60, 40, 'Defend', self.__defend, '2'),
+                        Button(self.window, Point(250, 300), 60, 40, 'Ultimate', self.__ultimate, '3'),
+                        Button(self.window, Point(350, 300), 60, 40, 'Flee', self.__flee, '4')]
         self.labels = [Text(Point(75, 80), 'You'),
                        Text(Point(325, 80), f'{self.enemy.getName()}')]
 
@@ -143,19 +143,24 @@ class AttackWindow:
         xp_text = Text(Point(200, 370), f'XP obtained: {xp_obtained}')
         xp_text.draw(self.window)
 
-        p = self.window.getMouse()                                      # try/except
-        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:
-            self.run_flag = False
-            self.window.close()
+        self._getExit()
 
     def _loseDisplay(self):
         lose_text = Text(Point(200, 75), 'You Died!')
         lose_text.draw(self.window)
 
-        p = self.window.getMouse()
-        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:              # try/except
-            self.run_flag = False
-            self.window.close()
+        self._getExit()
+
+    def _getExit(self):
+        while True:
+            p, k = handle_input(self.window)
+            try:
+                if k == 'space' or (0 <= p.getX() <= 400 and 0 <= p.getY() <= 400):  # try/except
+                    self.run_flag = False
+                    self.window.close()
+                    break
+            except AttributeError:
+                continue
 
     def startFight(self):
         while self.run_flag:
@@ -173,7 +178,7 @@ class AttackWindow:
                 break
 
             for button in self.buttons:
-                if button.clicked(p):
+                if button.clicked(p) or button.pressed(k):
                     action = button.getAction()
                     res = action()
                     if res == 0:
@@ -201,8 +206,8 @@ class ItemWindow:
         self.sprite_window = Rectangle(Point(150, 100), Point(250, 200))
         self.sprite_window.draw(self.window)
 
-        self.buttons = [Button(self.window, Point(150, 300), 60, 40, 'Use', self.item_action),
-                        Button(self.window, Point(250, 300), 60, 40, 'Store', self.character.storeInInventory)]
+        self.buttons = [Button(self.window, Point(150, 300), 60, 40, 'Use', self.item_action, 'u'),
+                        Button(self.window, Point(250, 300), 60, 40, 'Store', self.character.storeInInventory, 'y')]
         self.labels = []
 
         for button in self.buttons:
@@ -221,10 +226,7 @@ class ItemWindow:
         lose_text = Text(Point(200, 70), f'{self.item.name} increased by {self.item.getAttribute()}!')
         lose_text.draw(self.window)
 
-        p, k = handle_input(self.window)
-        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:       # try/except
-            self.run_flag = False
-            self.window.close()
+        self._getExit()
 
     def _StoreDisplay(self):
         self.run_flag = False
@@ -232,10 +234,18 @@ class ItemWindow:
         lose_text = Text(Point(200, 75), f'{self.item.name} stored in inventory')
         lose_text.draw(self.window)
 
-        p, k = handle_input(self.window)
-        if 0 <= p.getX() <= 400 and 0 <= p.getY() <= 400:       # try/except
-            self.run_flag = False
-            self.window.close()
+        self._getExit()
+
+    def _getExit(self):
+        while True:
+            p, k = handle_input(self.window)
+            try:
+                if k == 'space' or (0 <= p.getX() <= 400 and 0 <= p.getY() <= 400):  # try/except
+                    self.run_flag = False
+                    self.window.close()
+                    break
+            except AttributeError:
+                continue
 
     def useItem(self):
         text = Text(Point(200, 250), f'{self.item.name}')
@@ -243,17 +253,17 @@ class ItemWindow:
 
         while self.run_flag:
             try:
-                p = self.window.getMouse()
+                p, k = handle_input(self.window)
             except GraphicsError:
                 break
 
             for button in self.buttons:
-                if button.clicked(p) and button == self.buttons[0]:
+                if (button.clicked(p) or button.pressed(k)) and button == self.buttons[0]:
                     action = button.getAction()
                     action(self.item.getAttribute())
                     self._UseDisplay()
                     break
-                elif button.clicked(p) and button == self.buttons[1]:
+                elif (button.clicked(p) or button.pressed(k)) and button == self.buttons[1]:
                     action = button.getAction()
                     action(self.item)
                     self._StoreDisplay()
@@ -276,7 +286,7 @@ class InventoryWindow:
         temp1.draw(self.window)
 
         try:
-            p = self.window.getMouse()
+            p, k = handle_input(self.window)
         except GraphicsError:
             self.window.close()
             return
@@ -297,7 +307,7 @@ class StatsWindow:
         level = self.character.level
         gold_accumulated = self.character.gold_accumulated
 
-        total_xp = int(max_hp/10 * atk * enemies_killed * level * gold_accumulated/10)
+        total_xp = int(max_hp/10 * atk * enemies_killed * level * gold_accumulated/10)      # score calculation
 
         max_hp_label = Text(Point(200, 100), f'Max HP: {max_hp}')
         rooms_cleared_label = Text(Point(200, 125), f'Rooms cleared: {rooms_cleared}')
@@ -313,7 +323,7 @@ class StatsWindow:
             label.draw(self.window)
 
         try:
-            p = self.window.getMouse()
+            p, k = handle_input(self.window)
         except GraphicsError:
             self.window.close()
             return

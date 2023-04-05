@@ -1,14 +1,8 @@
-# button.py
+# button.py from PoP with modifications
 from graphics import *
 
 
 class Button:
-
-    # A button is a labeled rectangle in a window.
-    # It is activated or deactivated with the activate()
-    # and deactivate() methods. The clicked(p) method
-    # returns true if the button is active and p is inside it.
-
     def __init__(self, win, center, width, height, label, action, *args):
         # Creates a rectangular button, eg:
         # qb = Button(myWin, centerPoint, width, height, 'Quit')
@@ -26,20 +20,25 @@ class Button:
         self.label.draw(win)
         self.deactivate()
 
-        try:
+        try:                                                        # Added a keypress handler
             self.key = args[0]
         except IndexError:
-            pass
+            print(f"{label} key not configured")
         self.active = None                                          # added active to __init__
         self.action = action                                        # added action
 
-    def clicked(self, p):
-        # Returns true if button active and p is inside
-        return (self.xmin <= p.getX() <= self.xmax and              # removed 'if button active and'
-                self.ymin <= p.getY() <= self.ymax)
+    def clicked(self, p):                                           # Added error handling
+        try:
+            return (self.xmin <= p.getX() <= self.xmax and          # removed 'if button active and'
+                    self.ymin <= p.getY() <= self.ymax)
+        except AttributeError:
+            return False
 
-    def pressed(self, k):
-        return self.key == k
+    def pressed(self, k):                                           # Added error handling
+        try:
+            return self.key == k
+        except AttributeError:
+            return False
 
     def getLabel(self):
         # Returns the label string of this button.
@@ -57,5 +56,5 @@ class Button:
         self.rect.setWidth(1)
         self.active = False
 
-    def getAction(self):                                          # added get_action
+    def getAction(self):                                          # added getAction()
         return self.action

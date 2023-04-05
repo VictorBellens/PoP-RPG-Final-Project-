@@ -7,6 +7,7 @@ from datetime import datetime
 from character import Character
 from room import Room
 from common import handle_input
+import keyboard
 
 
 class GameWindow:   # This controls the UI and button functionality
@@ -196,7 +197,7 @@ class GameWindow:   # This controls the UI and button functionality
                     button.activate()
 
                     self.window.update()
-            time.sleep(0.1)     # reduces CPU usage and stops the button from being spammed
+                    self.window.focus_set()
 
     def quit(self):
         if self.save_log:
