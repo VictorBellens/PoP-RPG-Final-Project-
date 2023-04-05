@@ -1,33 +1,58 @@
 import keyboard
 import time
 
+""""
+=====CONTROLS=====
+Move up:     ↑
+Move down:   ↓
+Move left:   ←
+Move right:  →
+Action:      space
+Inventory:   i
+Stats:       s
+Quit:        q
+action_1:    1
+action_2:    2
+action_3:    3
+action_4:    4
+action_5:    5
+action_6:    6
+exit window: space
+==================
+"""
+
+
 """VARS ETC."""
 log = {}
 
-
-"""CONFIG FOR MACROS"""
+"""CONFIG FOR MACROS (DO NOT EDIT)"""
 # MAIN CONTROLS
 north = 'up'
 south = 'down'
 east = 'right'
 west = 'left'
-action = 'return'   # this is actually "space" but doesn't work for some reason
+action = 'return'     # this is the only reason why we can't edit
 inventory = 'i'
 _quit = 'q'
 stats = 's'
-
 # ATTACK CONTROLS
-
 attack = '1'
 defend = '2'
 ultimate = '3'
 flee = '4'
-
 # ITEM CONTROLS
 use_item = 'u'
 store_item = 'y'
-
 # SHOP CONTROLS
+buy_1 = '1'
+buy_2 = '2'
+buy_3 = '3'
+buy_4 = '4'
+buy_5 = '5'
+exit_ = '6'
+
+
+"""COMMON FUNCTIONS"""
 
 
 def handle_input(window):
@@ -59,7 +84,7 @@ def handle_input(window):
         elif keyboard.is_pressed(store_item):
             k = 'y'
 
-        elif keyboard.is_pressed(attack):
+        elif keyboard.is_pressed(attack):          # ATTACK + ITEM CONTROLS
             k = '1'
         elif keyboard.is_pressed(defend):
             k = '2'
@@ -67,6 +92,10 @@ def handle_input(window):
             k = '3'
         elif keyboard.is_pressed(flee):
             k = '4'
+        elif keyboard.is_pressed(buy_5):
+            k = '5'
+        elif keyboard.is_pressed(exit_):
+            k = '6'
 
         else:
             k = None
