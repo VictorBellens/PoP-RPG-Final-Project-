@@ -23,7 +23,7 @@ class AttackWindow:
                        Text(Point(325, 80), f'{self.enemy.getName()}')]
 
         self.enemy_labels = []
-        self.player_labels = []
+        self.character_labels = []
         self.label_count = 1
 
         self.__setupAll()
@@ -108,7 +108,7 @@ class AttackWindow:
         if self.label_count > 5:
             for labels in self.enemy_labels:
                 labels.undraw()
-            self.player_labels = []
+            self.character_labels = []
             self.label_count = 1
 
         y_pos = (self.label_count * 20) + 90
@@ -311,10 +311,95 @@ class StatsWindow:
 class ShopWindow:
     def __init__(self, character):
         self.window = GraphWin("Shop", 400, 400)
-        self.character = character
+        self.window.setCoords(0, 0, 4, 4)
 
-        self.buttons = []
+        self.character = character
+        self.runFlag = True
+
+        self.buttons = [Button(self.window, Point(1, 3), 1.5, 0.6, "25% HP Recovery (50 gold)",
+                               self.buyHpRecovery25, '1'),
+                        Button(self.window, Point(1, 2.25), 1.5, 0.6, "50% HP Recovery (100 gold)",
+                               self.buyHpRecovery50, '2'),
+                        Button(self.window, Point(1, 1.5), 1.5, 0.6, "100% HP Recovery (200 gold)",
+                               self.buyHpRecovery100, '3'),
+                        Button(self.window, Point(3, 3), 1.5, 0.6, "Attack Boost +10 (100 gold)",
+                               self.buyAttackBoost10, '4'),
+                        Button(self.window, Point(3, 2.25), 1.5, 0.6, "Ultimate Power Boost (1000 gold)",
+                               self.buyUltimatePowerBoost1000, '5'),
+                        Button(self.window, Point(3, 1.5), 1.5, 0.6, "Leave", self.leaveShop, '6')
+                        ]
+
+        for button in self.buttons:
+            button.activate()
 
     def useShop(self):
-        shop_level = self.character.level
-        get_exit(self)
+        while self.runFlag:
+            p, k = handle_input(self.window)
+
+            for button in self.buttons:
+                if button.clicked(p) or button.pressed(k):
+                    action = button.getAction()
+                    action()
+
+    def buyHpRecovery25(self):
+        if self.buyHpRecovery(0.25, 50):
+            self.displayMessage("25% health recovery purchased")
+
+    def buyHpRecovery50(self):
+        if self.buyHpRecovery(0.5, 100):
+            self.displayMessage("50% health recovery purchased")
+
+    def buyHpRecovery100(self):
+        if self.buyHpRecovery(1, 200):
+            self.displayMessage("100% health recovery purchased")
+
+    def buyAttackBoost10(self):
+        if self.buyAttackBoost(10, 100):
+            self.displayMessage("Attack Boost +10 purchased")
+
+    def buyUltimatePowerBoost1000(self):
+        if self.buyUltimatePowerBoost(1000):
+            self.displayMessage("Ultimate Power Boost purchased")
+
+    def leaveShop(self):
+        self.runFlag = False
+        self.window.close()
+
+    def buyHpRecovery(self, percentage, cost):
+        if self.character.gold >= cost:
+            self.character.gold -= cost
+            hpToRecover = int(self.character.max_hp * percentage)
+            self.character.hp = min(self.character.hp + hpToRecover, self.character.max_hp)
+            return True
+        else:
+            self.displayMessage("Not enough gold.")
+            return False
+
+    def buyAttackBoost(self, boost, cost):
+        if self.character.gold >= cost:
+            self.character.gold -= cost
+            self.character.atk += boost
+            return True
+        else:
+            self.displayMessage("Not enough gold.")
+            return False
+
+    def buyUltimatePowerBoost(self, cost):
+        if self.character.gold >= cost and self.character.ultimate_available < 2:
+            self.character.gold -= cost
+            self.character.ultimate_available += 1
+            return True
+        elif self.character.ultimate_available >= 2:
+            self.displayMessage("Maximum ultimate powers reached.")
+        else:
+            self.displayMessage("Not enough gold.")
+        return False
+
+    def displayMessage(self, message):
+        message_text = Text(Point(2, 0.75), message)
+        message_text.setSize(12)
+        message_text.setStyle("bold")
+        message_text.setTextColor("red")
+        message_text.draw(self.window)
+        self.window.getMouse()
+        message_text.undraw()
