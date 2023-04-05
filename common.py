@@ -1,29 +1,10 @@
 import keyboard
 import time
 
-""""
-=====CONTROLS=====
-Move up:     ↑
-Move down:   ↓
-Move left:   ←
-Move right:  →
-Action:      space
-Inventory:   i
-Stats:       s
-Quit:        q
-action_1:    1
-action_2:    2
-action_3:    3
-action_4:    4
-action_5:    5
-action_6:    6
-exit window: space
-==================
-"""
-
 
 """VARS ETC."""
 log = {}
+
 
 """CONFIG FOR MACROS (DO NOT EDIT)"""
 # MAIN CONTROLS
