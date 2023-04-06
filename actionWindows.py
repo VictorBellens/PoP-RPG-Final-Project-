@@ -1,7 +1,8 @@
 from graphicInterface.button import Button
 from graphicInterface.graphics import *
 import random
-from common import handle_input, get_exit
+from common import handle_input, get_exit, log
+from datetime import datetime
 
 
 class AttackWindow:
@@ -170,6 +171,7 @@ class AttackWindow:
                 if button.clicked(p) or button.pressed(k):
                     action = button.getAction()
                     res = action()
+                    log[datetime.now()] = button.getLabel()[0]
                     if res == 0:
                         break
                     label, color = self.enemy.getResponse(self.character, action)
@@ -238,12 +240,14 @@ class ItemWindow:
             for button in self.buttons:
                 if (button.clicked(p) or button.pressed(k)) and button == self.buttons[0]:
                     action = button.getAction()
+                    log[datetime.now()] = button.getLabel()[0]
                     action(self.item.getAttribute())
                     self._UseDisplay()
                     break
                 elif (button.clicked(p) or button.pressed(k)) and button == self.buttons[1]:
                     action = button.getAction()
                     action(self.item)
+                    log[datetime.now()] = button.getLabel()[0]
                     self._StoreDisplay()
                     break
 
@@ -340,6 +344,7 @@ class ShopWindow:
                 if button.clicked(p) or button.pressed(k):
                     action = button.getAction()
                     action()
+                    log[datetime.now()] = button.getLabel()[0]
 
     def buyHpRecovery25(self):
         if self.buyHpRecovery(0.25, 50):
