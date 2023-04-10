@@ -50,7 +50,8 @@ class Room:     # This is responsible for the room information such as enemy/ite
         enemies = round(enemy_chance / 10) * random.randint(1, 3)   # create more rng here...
 
         for n in range(enemies):
-            self.enemies[Enemy(level)] = self.locationGenerator()
+            loc = self.locationGenerator()
+            self.enemies[Enemy(level, loc)] = loc
 
     def __setBarrierCount(self, barrier_count, level):
         barriers = round(barrier_count/10) * random.randint(1, 3)

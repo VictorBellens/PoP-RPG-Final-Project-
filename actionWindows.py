@@ -13,9 +13,6 @@ class AttackWindow:
         self.character = character
         self.enemy = enemy
 
-        self.sprite_window = Rectangle(Point(150, 100), Point(250, 200))
-        self.sprite_window.draw(self.window)
-
         self.buttons = [Button(self.window, Point(50, 300), 60, 40, 'Attack', self.__attack, '1'),
                         Button(self.window, Point(150, 300), 60, 40, 'Defend', self.__defend, '2'),
                         Button(self.window, Point(250, 300), 60, 40, 'Ultimate', self.__ultimate, '3'),
@@ -28,7 +25,16 @@ class AttackWindow:
         self.label_count = 1
 
         self.__setupAll()
+        self.__setupSprite()
         self._updateHealth()
+
+    def __setupSprite(self):
+        image = self.enemy.sprite_window
+        # image = enemy.sprite_window
+        # image.draw(self.window)
+
+        self.sprite_window = Rectangle(Point(150, 100), Point(250, 200))
+        self.sprite_window.draw(self.window)
 
     def __setupAll(self):
         for button in self.buttons:

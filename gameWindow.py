@@ -129,12 +129,15 @@ class GameWindow:   # This controls the UI and button functionality
         self.player_position.draw(self.window)
 
     def _updateEnemyLocation(self):                         # It is likely that we can replace all the updatesItem/Enemy
-        enemies = self.character.getEnemyPositions()
+        enemies_positions = self.character.getEnemyPositions()
+        enemies = self.character.getEnemies()
         for pos in self.enemy_positions:
             pos.undraw()
 
-        for enemy_pos in enemies:
+        for enemy_pos, enemy in zip(enemies_positions, enemies):
             x, y = enemy_pos
+            # image = enemy.sprite_window
+            # image.draw(self.window)
             position = Circle(self.display_matrix[x][y], 12)
             position.setFill(color_rgb(230, 40, 40))
             position.draw(self.window)

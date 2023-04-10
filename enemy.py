@@ -1,8 +1,11 @@
 import random
+import graphics
+from graphics import *
+from PIL import Image as PILImage, ImageTk
 
 
 class Enemy:
-    def __init__(self, chr_lvl):
+    def __init__(self, chr_lvl, *args):
         self.hp = 100 * chr_lvl      # DEBUG
         self.max_hp = 100 * chr_lvl
         self.atk = 5 * chr_lvl
@@ -10,6 +13,31 @@ class Enemy:
         self.lvl = chr_lvl
         self.is_dead = False
         self.no_attack_for = 0
+        self.location = args[0]
+        # self.sprite_map = self.__getMapImage()
+        # self.sprite_window = self.__getWindowImage()
+
+    def __getMapImage(self):  # takes the enemy level, finds the image corresponding enemy level, then returns the image
+        location = Point(self.location[0], self.location[1])
+        filename = None
+
+        if self.lvl < 2:
+            filename = 'mapSprites.NAMEHERE.png'
+        elif self.lvl < 5:
+            filename = None
+        elif self.lvl < 10:
+            filename = None
+
+        pil_img = PILImage.open(filename)
+
+        photo = ImageTk.PhotoImage(pil_img)
+        img = graphics.Image(location, photo)
+
+        return img
+
+    def __getWindowImage(self):
+        filename = 'windowSprites.NAMEHERE.png'
+        return 1
 
     def checkIsDead(self):
         if self.hp <= 0:
