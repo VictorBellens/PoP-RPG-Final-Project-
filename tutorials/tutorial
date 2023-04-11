@@ -38,6 +38,7 @@ Shop (golden) window:
 - Click the attribute you want then click leave
 
 General:
+- To start the program, run 'main.py'
 - To leave the window once the action is complete, either click anywhere or press space
 - To enter the next room, use Action when on the blue square
 

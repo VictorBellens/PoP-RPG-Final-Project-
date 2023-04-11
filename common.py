@@ -2,20 +2,21 @@ import keyboard
 import time
 
 
-"""VARS ETC."""
+"""VARS"""
 log = {}
 
 
-"""CONFIG FOR MACROS (DO NOT EDIT)"""
+"""CONFIG FOR MACROS"""
 # MAIN CONTROLS
 north = 'up'
 south = 'down'
 east = 'right'
 west = 'left'
-action = 'return'     # this is the only reason why we can't edit
+action = 'space'       # DO NOT EDIT
 inventory = 'i'
 _quit = 'q'
 stats = 's'
+exit_window = 'space'  # DO NOT EDIT
 # ATTACK CONTROLS
 attack = '1'
 defend = '2'
@@ -30,10 +31,7 @@ buy_2 = '2'
 buy_3 = '3'
 buy_4 = '4'
 buy_5 = '5'
-exit_ = '6'
-
-
-"""COMMON FUNCTIONS"""
+exit_shop = '6'
 
 
 def handle_input(window):
@@ -48,8 +46,8 @@ def handle_input(window):
             k = 'Right'
         elif keyboard.is_pressed(west):
             k = 'Left'
-        elif keyboard.is_pressed(action):
-            k = 'Return'
+        elif keyboard.is_pressed('return'):
+            k = 'return'
         elif keyboard.is_pressed(inventory):
             k = 'i'
         elif keyboard.is_pressed(_quit):
@@ -57,7 +55,7 @@ def handle_input(window):
         elif keyboard.is_pressed(stats):
             k = 's'
 
-        elif keyboard.is_pressed('space'):        # EXIT CONTROLS
+        elif keyboard.is_pressed(exit_window):        # EXIT CONTROLS
             k = 'space'
 
         elif keyboard.is_pressed(use_item):        # ITEM CONTROLS
@@ -75,7 +73,7 @@ def handle_input(window):
             k = '4'
         elif keyboard.is_pressed(buy_5):
             k = '5'
-        elif keyboard.is_pressed(exit_):
+        elif keyboard.is_pressed(exit_shop):
             k = '6'
 
         else:

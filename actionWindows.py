@@ -25,7 +25,7 @@ class AttackWindow:
         self.label_count = 1
 
         self.__setupAll()
-        self.__setupSprite()
+        # self.__setupSprite()
         self._updateHealth()
 
     def __setupSprite(self):

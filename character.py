@@ -97,7 +97,7 @@ class Character:    # This is responsible for the character attributes, and all 
         item_count = 25
         enemy_count = 25
         barrier_count = 30
-        shop_count = 100
+        shop_count = 0
 
         if self.rooms_cleared % 2 == 0:      # Change this to a higher number later
             shop_count = 100
