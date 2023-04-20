@@ -1,0 +1,56 @@
+=====================================================CONTROLS===========================================================
+
+Move up:     ↑
+Move down:   ↓
+Move left:   ←
+Move right:  →
+Action:      space
+Inventory:   i
+Stats:       s
+Quit:        q
+action_1:    1
+action_2:    2
+action_3:    3
+action_4:    4
+action_5:    5
+action_6:    6
+exit window: space
+
+====================================================CONTROL MEANINGS====================================================
+
+Main window:
+- Action    To use any of the above, click action when positioned on above the said circle
+- Inventory opens your inventory
+- Stats     shows your current attributes/progress/score
+- Quit      quits the game instantly
+
+Enemy (red) window:
+- Attack   the enemy dealing your attack attribute with a 70% chance of success
+- Defend   against the enemy with a 80% chance of success of deflecting either the next 1, 2, or 3 enemy attacks
+- Ultimate attack dealing your ultimate attribute with a 100% chance of success
+- Flee
+
+Item (blue) window:
+- Use      To use the item instantly
+- Store    To store the item in your inventory
+
+Shop (golden) window:
+- Click the attribute you want then click leave
+
+General:
+- To start the program, run 'main.py'
+- To leave the window once the action is complete, either click anywhere or press space
+- To enter the next room, use Action when on the blue square
+
+====================================================TIPS AND TRICKS=====================================================
+
+- Score is exponential so try play as long as you can
+- Increase your xp level as items will give higher attributes and enemies drop more gold/xp
+- Ultimate deals 500 damage, so buy the increase of damage of that, then buy the second one ultimate
+- Do not use health items if you are close or at max health as it will not affect you (store and use later)
+- Max hp is one of the most OP items as it increases your max health, and gives you half the increase of the health inc.
+- Enemies get stronger with your XP level, so try and maximize your attack and health attributes without increasing XP.
+- Always Defend first, then attack whilst you are defended, rinse and repeat
+
+========================================================================================================================
+
