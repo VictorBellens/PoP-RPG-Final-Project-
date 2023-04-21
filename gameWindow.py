@@ -5,6 +5,7 @@ from character import Character
 from common import handle_input, log
 
 from datetime import datetime
+from time import time, ctime
 
 
 class GameWindow:   # This controls the UI and button functionality
@@ -116,7 +117,10 @@ class GameWindow:   # This controls the UI and button functionality
 
         gold_text = Text(Point(86, 450), f'Gold: {gold}')
 
-        self.labels = [hp_text, hp_rect, gold_text, xp_rect, xp_text]
+        time_text = Text(Point(100, 480), f'{ctime(self.character.elapsed_time)[14:20]} '
+                                          f'/ {int(self.character.allowed_time/60)}:00')
+
+        self.labels = [hp_text, hp_rect, gold_text, xp_rect, xp_text, time_text]
 
         for label in self.labels:
             label.draw(self.window)
@@ -170,22 +174,37 @@ class GameWindow:   # This controls the UI and button functionality
     def _updateBarrierLocation(self):
         pass
 
+    def _updateTimer(self):
+        self.character.elapsed_time = (time() - self.character.start_time) - (15 * self.character.enemies_killed)
+        if self.character.elapsed_time < 0:
+            self.character.elapsed_time = 0
+        if self.character.elapsed_time > self.character.allowed_time:
+            self.window.close()
+            self.character.viewStats()
+            self.quit()
+
     def startWindow(self):
         while self.run_flag:
-            self._updateLabels()
-            self._updatePlayerLocation()
-            self._updateEnemyLocation()
-            self._updateItemLocation()
-            self._updateShopLocation()
+            try:
+                self._updateTimer()
+                self._updateLabels()
+                self._updatePlayerLocation()
+                self._updateEnemyLocation()
+                self._updateItemLocation()
+                self._updateShopLocation()
+            except GraphicsError:
+                print("Game ended...")
+                break
 
             if self.character.hp <= 0:          # NEEDS MORE WORK
                 self.window.close()
-                self.character.viewStats()
+                self.quit()
 
             try:
                 p, k = handle_input(self.window)
             except GraphicsError:
                 print("Game ended...")
+                self.character.viewStats()
                 break
 
             for button in self.control_buttons:

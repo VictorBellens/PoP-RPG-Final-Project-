@@ -1,5 +1,6 @@
 from room import Room
 from actionWindows import AttackWindow, ShopWindow, InventoryWindow, ItemWindow, StatsWindow
+from time import time
 
 
 class Character:    # This is responsible for the character attributes, and all methods tied to room, items, enemy, etc.
@@ -17,6 +18,10 @@ class Character:    # This is responsible for the character attributes, and all 
 
         self.ultimate_attribute = 500
         self.ultimate_available = 1
+
+        self.start_time = time()
+        self.allowed_time = 2 * 60  # 2 minutes
+        self.elapsed_time = 0
 
         self.inventory = []
 

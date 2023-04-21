@@ -3,7 +3,7 @@ from graphics import *
 
 
 class Button:
-    def __init__(self, win, center, width, height, label, action, *args):
+    def __init__(self, win, center, width, height, label, action, key, *args):
         # Creates a rectangular button, eg:
         # qb = Button(myWin, centerPoint, width, height, 'Quit')
 
@@ -19,11 +19,12 @@ class Button:
         self.label = Text(center, label)
         self.label.draw(win)
         self.deactivate()
-
-        try:                                                        # Added a keypress handler
-            self.key = args[0]
+        self.key = key                                              # added self.key = key
+        try:
+            self.image = args[0]
         except IndexError:
-            print(f"{label} key not configured")
+            print(f"{label} does not have an image configured")     # for debugging
+
         self.active = None                                          # added active to __init__
         self.action = action                                        # added action
 
@@ -58,3 +59,13 @@ class Button:
 
     def getAction(self):                                          # added getAction()
         return self.action
+
+
+class InventoryButton(Button):
+    def __init__(self, win, center, width, height, label, action, key, *args):
+        try:
+            self.image = args[0]
+        except IndexError:
+            self.image = None
+            print(f"{label} has no image configured")
+        super().__init__(self, win, center, width, height, label, action, key, self.image, *args)

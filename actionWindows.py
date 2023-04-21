@@ -263,15 +263,30 @@ class ItemWindow:
 
 class InventoryWindow:
     def __init__(self, character):
-        self.window = GraphWin('Inventory', 400, 400)
+        self.window = GraphWin('Inventory', 500, 400)
         self.character = character
+        self.inventory = self.character.inventory
         self.buttons = []
+        self.__createButtons()
+
+    def __createButtons(self):      # We may need to make a new button for the inventory
+        sc = self.character
+
+        x = 50
+        y = 50
+        for i, item in enumerate(self.inventory):
+            if x > 350:
+                x = 50
+            self.buttons.append(Button(self.window, Point(x, y), 100, 100, f'{item.name}', sc.useItem, None, None))
+            x += 102
+            if i % 10 == 0 and i != 0:
+                y += 102
 
     def viewInventory(self):
         temp = Text(Point(200, 200), 'This is where we view the inventory (temp)')
-        temp.draw(self.window)
+        # temp.draw(self.window)
         temp1 = Text(Point(200, 215), f'{self.character.inventory}')
-        temp1.draw(self.window)
+        # temp1.draw(self.window)
 
         get_exit(self)
 

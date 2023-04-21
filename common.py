@@ -1,6 +1,7 @@
 import keyboard
 import time
 
+import graphicInterface.graphics
 
 """VARS"""
 log = {}
