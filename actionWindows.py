@@ -160,7 +160,10 @@ class AttackWindow:
 
     def startFight(self):
         while self.run_flag:
-            self._updateHealth()
+            try:
+                self._updateHealth()
+            except GraphicsError:
+                break
 
             if self.enemy.hp <= 0:
                 self._winDisplay()
@@ -263,43 +266,55 @@ class ItemWindow:
 
 class InventoryWindow:
     def __init__(self, character):
-        self.window = GraphWin('Inventory', 500, 400)
         self.character = character
+        x, y = self.__getWindowSize()
+        self.window = GraphWin('Inventory', x, y)
         self.inventory = self.character.inventory
         self.buttons = []
         self.__createButtons()
 
-    def __createButtons(self):      # We may need to make a new button for the inventory
-        sc = self.character
+    def __getWindowSize(self):
+        if (inv_len := len(self.character.inventory)) < 20:
+            return 500, 400
+        else:
+            return 500, (inv_len/5) * 102
 
+    def __createButtons(self):      # We may need to make a new button for the inventory
         x = 50
         y = 50
         for i, item in enumerate(self.inventory):
-            if x > 350:
-                x = 50
-            self.buttons.append(Button(self.window, Point(x, y), 100, 100, f'{item.name}', sc.useItem, None, None))
-            x += 102
-            if i % 10 == 0 and i != 0:
+            self.buttons.append(Button(self.window, Point(x, y), 100, 100, f'{item.name}', item, None, None))
+            if x > 510:
                 y += 102
+                x = 50
+            else:
 
-    def viewInventory(self):
-        temp = Text(Point(200, 200), 'This is where we view the inventory (temp)')
-        # temp.draw(self.window)
-        temp1 = Text(Point(200, 215), f'{self.character.inventory}')
-        # temp1.draw(self.window)
+                x += 102
+
+        for button in self.buttons:
+            button.activate()
+
+    def viewInventory(self):        # MAIN LOOP FOR INVENTORY
+        p, k, window_closed = None, None, False
+        if len(self.character.inventory) == 0:
+            text = Text(Point(250, 200), "There is nothing in your inventory!")
+            text.draw(self.window)
+
+        try:
+            p, k = handle_input(self.window)
+        except GraphicsError:
+            window_closed = True
+
+        for button in self.buttons:
+            if not window_closed and (p is not None and button.clicked(p)):
+                button.deactivate()
+                log[datetime.now()] = button.getLabel()[0]
+                item = button.getAction()
+                self.character.useItem(item)
+            # else:
+            #     self.viewInventory()
 
         get_exit(self)
-
-    def _getExit(self):
-        while True:
-            p, k = handle_input(self.window)
-            try:
-                if k == 'space' or (0 <= p.getX() <= 400 and 0 <= p.getY() <= 400):  # try/except
-                    self.run_flag = False
-                    self.window.close()
-                    break
-            except AttributeError:
-                continue
 
 
 class StatsWindow:

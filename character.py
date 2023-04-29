@@ -172,7 +172,10 @@ class Character:    # This is responsible for the character attributes, and all 
         itemUse = ItemWindow(self, item)
         itemUse.useItem()
         if itemUse.getResult():
-            self.current_room.removeItem(item)
+            try:
+                self.current_room.removeItem(item)
+            except KeyError:
+                self.inventory.remove(item)
         del itemUse
 
     def useHealthItem(self, val):
