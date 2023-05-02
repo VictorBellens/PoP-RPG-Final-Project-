@@ -1,7 +1,4 @@
 import random
-import graphics
-from graphics import *
-from PIL import Image
 
 
 class Enemy:

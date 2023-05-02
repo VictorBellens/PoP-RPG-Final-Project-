@@ -178,9 +178,6 @@ class GameWindow:   # This controls the UI and button functionality
             position.draw(self.window)
             self.shop_positions.append(position)
 
-    def _updateBarrierLocation(self):
-        pass
-
     def _updateTimer(self):
         self.character.elapsed_time = (time() - self.character.start_time) - (15 * self.character.enemies_killed)
         if self.character.elapsed_time < 0:

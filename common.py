@@ -102,7 +102,6 @@ def handle_input(window):
 
 
 def get_exit(obj):
-    k, p = None, None
     while True:
         try:
             p, k = handle_input(obj.window)
@@ -120,7 +119,7 @@ def get_exit(obj):
             continue
 
 
-def get_player_profile(output_filename,  size=(50, 50)):
+def get_player_profile(output_filename,  size=(50, 35)):
     print("Changing your player profile...\nGet ready for a photo!")
     cap = cv2.VideoCapture(0)
 
@@ -132,9 +131,7 @@ def get_player_profile(output_filename,  size=(50, 50)):
         print(3 - n)
         time.sleep(1)
 
-    print("Capturing image!")
     ret, frame = cap.read()
-    print("Image captured!")
     cap.release()
 
     if not ret:
@@ -145,12 +142,15 @@ def get_player_profile(output_filename,  size=(50, 50)):
     resized_image = image.resize(size, Image.ANTIALIAS)
     resized_image.save(output_filename)
 
-    print(f"Image captured and resized successfully. Saved as {output_filename}.")
+    print(f"Image saved successfully @ {output_filename}.")
 
 
 def settings():
     print("===SETTINGS===")
     change_profile = True
+    print("You can change the image of your character, we do not recommend this,"
+          " if you do change the picture, \nit will be saved whilst the program is running"
+          " and afterwards it will be deleted.\n")
 
     while change_profile:
         p_change = input("Change profile (y/n): ")

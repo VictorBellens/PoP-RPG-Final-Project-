@@ -49,7 +49,7 @@ class AttackItem:
         filename = None
 
         if self.level < 5:
-            filename = 'spriteA  ctionWindow/Green Monster 148x148.png'
+            filename = 'spriteActionWindow/Green Monster 148x148.png'
         elif 5 <= self.level < 10:
             filename = 'spriteActionWindow/PurpleMonst2 148x148.png'
         elif self.level > 10:
@@ -62,19 +62,8 @@ class AttackItem:
         return self.attack_added
 
 
-class Barrier:
-    def __init__(self):     # This will contain the attributes of a barrier and the usage method.
-        pass
-
-
 class Shop:
     def __init__(self, xp_level):   # This will contain the methods needed for generating/using the shops
         self.player_xp_level = xp_level
         self.sprite_map = 'health&attackItems/Health_item55x55.png'  # CHANGE THIS AFTER BOZO
         self.sprite_window = None
-
-    def __setupShopItems(self):
-        pass
-
-    def useShop(self):
-        return 1

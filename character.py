@@ -14,7 +14,7 @@ class Character:    # This is responsible for the character attributes, and all 
         self.gold = 100
         self.gold_accumulated = 0
         self.enemies_killed = 0
-        self.level = 12
+        self.level = 1
         self.to_next_level = 0/100
         self.is_shielded = False
         self.health_item, self.max_hp_item, self.attack_item = True, True, True
@@ -29,7 +29,7 @@ class Character:    # This is responsible for the character attributes, and all 
 
         self.inventory = []
 
-        self.current_room = Room(25, 25, 0, 0, self.level)
+        self.current_room = Room(25, 25, 0, self.level)
         self.rooms_cleared = 0          # Create a new list attribute which contains all the previous rooms?
         self.current_pos = [0, 0]
 
@@ -84,12 +84,6 @@ class Character:    # This is responsible for the character attributes, and all 
     def getShopPositions(self):
         return self.current_room.shops.values()
 
-    def getBarriers(self):
-        return self.current_room.barriers
-
-    def getBarrierLocation(self):
-        return self.current_room.barriers.values()
-
     def getXp(self):
         return self.level
 
@@ -108,13 +102,12 @@ class Character:    # This is responsible for the character attributes, and all 
     def getNextRoom(self):      # rng will be in #room.py, the var below are only for XP level/difficulty
         item_count = 25
         enemy_count = 25
-        barrier_count = 30
         shop_count = 0
 
         if self.rooms_cleared % 2 == 0:      # Change this to a higher number later
             shop_count = 100
 
-        self.current_room = Room(item_count, enemy_count, barrier_count, shop_count, self.level)
+        self.current_room = Room(item_count, enemy_count, shop_count, self.level)
         self.ultimate_available = 1
 
     def checkLevel(self):
@@ -149,8 +142,7 @@ class Character:    # This is responsible for the character attributes, and all 
             print("Shop encountered")
             for pos in sps:
                 if pos == self.current_pos:
-                    shop = self.getShop(pos)
-                    self.useShop(shop)
+                    self.useShop()
                     break
 
     def viewInventory(self):
@@ -222,7 +214,7 @@ class Character:    # This is responsible for the character attributes, and all 
         print("Item stored in inventory")
         self.inventory.append(item)
 
-    def useShop(self, shop):
+    def useShop(self):
         print("Using the shop")
         shopUse = ShopWindow(self)
         shopUse.useShop()
@@ -235,4 +227,3 @@ class Character:    # This is responsible for the character attributes, and all 
             print("Position not possible")  # RETURN AN ERROR FOR THE WINDOW
         else:
             self.current_pos = [new_x, new_y]
-
