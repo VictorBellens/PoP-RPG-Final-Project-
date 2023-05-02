@@ -36,9 +36,9 @@ class AttackItem:
     def __getMapImage(self):  # takes the enemy level, finds the image corresponding enemy level, then returns the image
         filename = None
 
-        if self.level < 2:
+        if self.level < 5:
             filename = 'spriteMap/Green Monster 55x55.png'
-        elif self.level >= 5:
+        elif 5 <= self.level < 10:
             filename = 'spriteMap/PurpleMonst2 55x55.png'
         elif self.level > 10:
             filename = 'spriteMap/Red Monster 55x55.png'
@@ -48,9 +48,9 @@ class AttackItem:
     def __getWindowImage(self):
         filename = None
 
-        if self.level < 2:
-            filename = 'spriteActionWindow/Green Monster 148x148.png'
-        elif self.level >= 5:
+        if self.level < 5:
+            filename = 'spriteA  ctionWindow/Green Monster 148x148.png'
+        elif 5 <= self.level < 10:
             filename = 'spriteActionWindow/PurpleMonst2 148x148.png'
         elif self.level > 10:
             filename = 'spriteActionWindow/Red Monster 148x148.png'

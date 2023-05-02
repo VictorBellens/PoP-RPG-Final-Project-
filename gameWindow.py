@@ -223,7 +223,7 @@ class GameWindow:   # This controls the UI and button functionality
                 p, k = handle_input(self.window)
             except GraphicsError:
                 print("Game ended...")
-                self.character.endGame()
+                self.character.viewStats()
                 break
 
             for button in self.control_buttons:
@@ -237,10 +237,10 @@ class GameWindow:   # This controls the UI and button functionality
                     self.window.update()
                     self.window.focus_set()
 
-        if self.character.restart:
-            print("Restarting game...")
-            new_game = GameWindow(save_log=True)
-            new_game.startWindow()
+        # if self.character.restart:
+        #     print("Restarting game...")
+        #     new_game = GameWindow(save_log=True)
+        #     new_game.startWindow()
 
     def quit(self):
         if self.save_log:

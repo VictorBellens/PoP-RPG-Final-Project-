@@ -14,7 +14,7 @@ class Character:    # This is responsible for the character attributes, and all 
         self.gold = 100
         self.gold_accumulated = 0
         self.enemies_killed = 0
-        self.level = 1
+        self.level = 12
         self.to_next_level = 0/100
         self.is_shielded = False
         self.health_item, self.max_hp_item, self.attack_item = True, True, True

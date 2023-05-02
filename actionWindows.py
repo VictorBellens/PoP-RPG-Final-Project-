@@ -362,18 +362,20 @@ class EndWindow(StatsWindow):
 
     def viewStatsWrapper(self):
         StatsWindow.viewStats(self, to_quit=False)
-        exit_button = Button(self.window, Point(200, 360), 90, 30, 'Play again', None, 'r')
-        exit_button.activate()
+        play_again = Button(self.window, Point(200, 360), 90, 30, 'Play again', None, 'r')
+        play_again.activate()
+        p, k = None, None
+
         try:
             p, k = handle_input(self.window)
         except GraphicsError:
             print("Game ended...")
 
-        if (p is not None and exit_button.clicked(p)) or exit_button.pressed(k):
-            exit_button.deactivate()
-            log[datetime.now()] = exit_button.getLabel()[0]
+        if (p is not None and play_again.clicked(p)) or play_again.pressed(k):
+            play_again.deactivate()
+            log[datetime.now()] = play_again.getLabel()[0]
             self.result = True
-            exit_button.activate()
+            play_again.activate()
 
     def getResult(self):
         self.window.close()
