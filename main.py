@@ -8,8 +8,10 @@ Repository: https://github.com/VictorBellens/PoP-RPG-Final-Project-
 """
 
 from gameWindow import GameWindow
+from common import settings
 
 
 if __name__ == '__main__':
-    gw = GameWindow(save_log=True, change_profile=False)
+    cp = settings()
+    gw = GameWindow(save_log=True)
     gw.startWindow()

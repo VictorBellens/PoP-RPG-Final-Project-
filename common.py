@@ -3,6 +3,8 @@ import time
 import cv2
 
 from PIL import Image
+from os import remove
+from os.path import exists
 import graphicInterface.graphics
 
 """VARS"""
@@ -119,32 +121,59 @@ def get_exit(obj):
 
 
 def get_player_profile(output_filename,  size=(50, 50)):
-    # Open the camera (0 is the default camera index)
+    print("Changing your player profile...\nGet ready for a photo!")
     cap = cv2.VideoCapture(0)
 
-    # Check if the camera is opened successfully
     if not cap.isOpened():
         print("Error: Could not open camera.")
         return
 
-    # Capture a frame
-    ret, frame = cap.read()
+    for n in range(3):
+        print(3 - n)
+        time.sleep(1)
 
-    # Release the camera resource
+    print("Capturing image!")
+    ret, frame = cap.read()
+    print("Image captured!")
     cap.release()
 
-    # Check if the frame was captured successfully
     if not ret:
         print("Error: Could not capture frame.")
         return
 
-    # Convert the OpenCV image (numpy array) to a PIL Image
     image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-
-    # Resize the image
     resized_image = image.resize(size, Image.ANTIALIAS)
-
-    # Save the resized image
     resized_image.save(output_filename)
 
     print(f"Image captured and resized successfully. Saved as {output_filename}.")
+
+
+def settings():
+    print("===SETTINGS===")
+    change_profile = True
+
+    while change_profile:
+        p_change = input("Change profile (y/n): ")
+
+        if p_change.lower() == 'y':
+            get_player_profile("spriteMap/player_custom 55x55.png")
+            change_profile = False
+        elif p_change.lower() == 'n':
+            change_profile = False
+        else:
+            print("\n===ERROR===\nPlease input a valid value\n")
+
+    return change_profile
+
+
+def delete_player_sprite():
+    if exists("spriteMap/Player_custom 55x55.png"):
+        remove("spriteMap/Player_custom 55x55.png")
+        print("Custom profile image deleted.")
+
+
+def get_character_sprite():
+    if exists("spriteMap/Player_custom 55x55.png"):
+        return "spriteMap/Player_custom 55x55.png"
+    else:
+        return "spriteMap/Player 55x55.png"

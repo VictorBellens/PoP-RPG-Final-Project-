@@ -2,20 +2,19 @@ from graphicInterface.graphics import *
 from graphicInterface.button import Button
 
 from character import Character
-from common import handle_input, log, get_player_profile
+from common import handle_input, log, delete_player_sprite
 
 from datetime import datetime
 from time import time, ctime
 
 
 class GameWindow:   # This controls the UI and button functionality
-    def __init__(self, save_log, change_profile=False):
+    def __init__(self, save_log):
         self.rooms = []
         self.character = Character()
 
         self.run_flag = True
         self.save_log = save_log
-        self.change_profile = change_profile
         self.start_time = time()
 
         # positions of items
@@ -32,9 +31,7 @@ class GameWindow:   # This controls the UI and button functionality
         self.inventory_buttons = []
         self.labels = []
         self.control_buttons = []
-
-        if not change_profile:
-            self._instantiateGraphicMethods()
+        self._instantiateGraphicMethods()
 
     def _instantiateGraphicMethods(self):
         self.window = GraphWin('RPG', 600, 600)  # Window set to 600x600
@@ -193,10 +190,6 @@ class GameWindow:   # This controls the UI and button functionality
             self.character.endGame()
 
     def startWindow(self):
-        if self.change_profile:
-            get_player_profile("player_sprite 50x50.png")   # change to correct directory
-            self._instantiateGraphicMethods()
-
         while self.run_flag:
             try:
                 self._updateTimer()
@@ -237,12 +230,8 @@ class GameWindow:   # This controls the UI and button functionality
                     self.window.update()
                     self.window.focus_set()
 
-        # if self.character.restart:
-        #     print("Restarting game...")
-        #     new_game = GameWindow(save_log=True)
-        #     new_game.startWindow()
-
     def quit(self):
+        delete_player_sprite()
         if self.save_log:
             with open('logFile.txt', 'w', encoding='utf-8') as logfile:
                 logfile.write(f'Log from {str(datetime.now())[:11]}\nTotal actions: {len(log)}\n')

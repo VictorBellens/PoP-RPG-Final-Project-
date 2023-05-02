@@ -8,6 +8,7 @@ from datetime import datetime
 class AttackWindow:
     def __init__(self, character, enemy):
         self.window = GraphWin('Attack', 400, 400)
+        self.window.focus_set()
         self.run_flag = True
 
         self.character = character
@@ -197,11 +198,12 @@ class AttackWindow:
 class ItemWindow:
     def __init__(self, character, item):
         self.window = GraphWin('Item', 400, 400)
+        self.window.focus_set()
         self.run_flag = True
 
         self.character = character
         self.item = item
-        self.item.sprite_window
+        # self.item.sprite_window
         self.item_id = str(item).lower()[7]
         self.item_action = None
         self.__getItemAction(self.item_id)
@@ -272,6 +274,7 @@ class InventoryWindow:
         self.character = character
         x, y = self.__getWindowSize()
         self.window = GraphWin('Inventory', x, y)
+        self.window.focus_set()
         self.inventory = self.character.inventory
         self.buttons = []
         self.__createButtons()
@@ -324,6 +327,7 @@ class StatsWindow:
     def __init__(self, character, supered=False):
         if not supered:
             self.window = GraphWin('Stats', 400, 400)
+            self.window.focus_set()
         self.character = character
 
     def viewStats(self, to_quit=True):
@@ -358,6 +362,7 @@ class EndWindow(StatsWindow):
         super().__init__(character, supered=True)
         self.character = character
         self.window = GraphWin('Stats', 400, 400)
+        self.window.focus_set()
         self.result = None
 
     def viewStatsWrapper(self):
@@ -386,6 +391,7 @@ class ShopWindow:
     def __init__(self, character):
         self.window = GraphWin("Shop", 400, 400)
         self.window.setCoords(0, 0, 4, 4)
+        self.window.focus_set()
 
         self.character = character
         self.runFlag = True
@@ -485,6 +491,7 @@ class LabelWindow:
         self.label = message_text
         self.window_size = self.__getWindowSize()
         self.window = GraphWin("Narrative", self.window_size[0], self.window_size[1])
+        self.window.focus_set()
 
         self.text = Text(Point(100, 100), self.label)
         self.text.setSize(12)

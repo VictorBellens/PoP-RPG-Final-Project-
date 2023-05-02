@@ -2,7 +2,7 @@ from room import Room
 from actionWindows import *
 from time import time
 
-from common import narrative
+from common import narrative, get_character_sprite
 
 
 class Character:    # This is responsible for the character attributes, and all methods tied to room, items, enemy, etc.
@@ -33,7 +33,7 @@ class Character:    # This is responsible for the character attributes, and all 
         self.rooms_cleared = 0          # Create a new list attribute which contains all the previous rooms?
         self.current_pos = [0, 0]
 
-        self.character_sprite = "spriteMap/Player 55x55.png"  # CHARACTER IMAGE HERE
+        self.character_sprite = get_character_sprite()  # CHARACTER IMAGE HERE
         LabelWindow(narrative["spawn"])
 
     def getCurrentPos(self):
