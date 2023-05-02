@@ -181,8 +181,7 @@ class GameWindow:   # This controls the UI and button functionality
             self.character.elapsed_time = 0
         if self.character.elapsed_time > self.character.allowed_time:
             self.window.close()
-            self.character.viewStats()
-            self.quit()
+            self.character.endGame()
 
     def startWindow(self):
         while self.run_flag:
