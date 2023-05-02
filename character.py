@@ -1,6 +1,8 @@
 from room import Room
-from actionWindows import AttackWindow, ShopWindow, InventoryWindow, ItemWindow, StatsWindow, EndWindow
+from actionWindows import *
 from time import time
+
+from common import narrative
 
 
 class Character:    # This is responsible for the character attributes, and all methods tied to room, items, enemy, etc.
@@ -15,6 +17,7 @@ class Character:    # This is responsible for the character attributes, and all 
         self.level = 1
         self.to_next_level = 0/100
         self.is_shielded = False
+        self.health_item, self.max_hp_item, self.attack_item = True, True, True
 
         self.ultimate_attribute = 500
         self.ultimate_available = 1
@@ -29,6 +32,9 @@ class Character:    # This is responsible for the character attributes, and all 
         self.current_room = Room(25, 25, 0, 0, self.level)
         self.rooms_cleared = 0          # Create a new list attribute which contains all the previous rooms?
         self.current_pos = [0, 0]
+
+        self.character_sprite = "spriteMap/Player 55x55.png"  # CHARACTER IMAGE HERE
+        LabelWindow(narrative["spawn"])
 
     def getCurrentPos(self):
         return self.current_pos
@@ -160,10 +166,15 @@ class Character:    # This is responsible for the character attributes, and all 
         del statView
 
     def attackEnemy(self, enemy):           # here is where we need to implement the attack functions.
+        if self.enemies_killed == 0:
+            LabelWindow(narrative["before_first_kill"])
+
         print("Running attack enemy method")
         enemyAttack = AttackWindow(self, enemy)
         enemyAttack.startFight()
         if enemyAttack.getResult():
+            if self.enemies_killed == 0:
+                LabelWindow(narrative["after_first_kill"])
             self.enemies_killed += 1
             self.current_room.removeEnemy(enemy)
         del enemyAttack
@@ -171,6 +182,10 @@ class Character:    # This is responsible for the character attributes, and all 
     def useItem(self, item):                # here is where we need to implement the shop functions
         print("Running use item method")
         itemUse = ItemWindow(self, item)
+
+        if item.name == "Attack" and self.attack_item:
+            LabelWindow(narrative["item_attack"])
+
         itemUse.useItem()
         if itemUse.getResult():
             try:

@@ -25,14 +25,16 @@ class AttackWindow:
         self.label_count = 1
 
         self.__setupAll()
-        # self.__setupSprite()
+        self.__setupSprite()
         self._updateHealth()
 
     def __setupSprite(self):
-        image = self.enemy.sprite_window
-        # image = enemy.sprite_window
-        # image.draw(self.window)
+        # makes the image show up in action window
+        filename = self.enemy.sprite_action_window
+        enemy_png = Image(Point(200, 150), filename)
+        enemy_png.draw(self.window)
 
+        # creates rectangle around sprite action window image
         self.sprite_window = Rectangle(Point(150, 100), Point(250, 200))
         self.sprite_window.draw(self.window)
 
@@ -199,6 +201,7 @@ class ItemWindow:
 
         self.character = character
         self.item = item
+        self.item.sprite_window
         self.item_id = str(item).lower()[7]
         self.item_action = None
         self.__getItemAction(self.item_id)
@@ -473,3 +476,26 @@ class ShopWindow:
         message_text.draw(self.window)
         self.window.getMouse()
         message_text.undraw()
+
+
+class LabelWindow:
+    def __init__(self, message_text):
+        self.label = message_text
+        self.window_size = self.__getWindowSize()
+        self.window = GraphWin("Narrative", self.window_size[0], self.window_size[1])
+
+        self.text = Text(Point(100, 100), self.label)
+        self.text.setSize(12)
+        self.text.setStyle("bold")
+        self.text.draw(self.window)
+
+        get_exit(self)
+
+    def __getWindowSize(self):
+        text_size = len(self.label)
+        if text_size < 150:
+            return 200, 200
+        elif text_size < 300:
+            return 300, 200
+        else:
+            return 400, 300

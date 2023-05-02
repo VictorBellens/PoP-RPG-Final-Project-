@@ -1,10 +1,22 @@
 import keyboard
 import time
+import cv2
 
+from PIL import Image
 import graphicInterface.graphics
 
 """VARS"""
 log = {}
+narrative = {
+    "spawn": "Welcome to the world!",       # MISC
+    "before_first_kill": "I have aids",
+    "after_first_kill": "and the clap",
+    "item_health": "You have encountered a health item!"
+                   "This will increase your health by a"
+                   "certain amount depending on your xp level",
+    "item_max_hp": "",
+    "item_attack": "",
+}
 
 
 """CONFIG FOR MACROS"""
@@ -93,8 +105,10 @@ def get_exit(obj):
         try:
             p, k = handle_input(obj.window)
         except graphicInterface.graphics.GraphicsError:     # handles force closing window
+            print("TOUCHED")
             obj.run_flag = False
             obj.window.close()
+            break
         try:
             if k == 'space' or (0 <= p.getX() <= 400 and 0 <= p.getY() <= 400):     # click anywhere or space to close
                 obj.run_flag = False
@@ -102,3 +116,35 @@ def get_exit(obj):
                 break
         except AttributeError:      # happens when p and k are not set
             continue
+
+
+def get_player_profile(output_filename,  size=(50, 50)):
+    # Open the camera (0 is the default camera index)
+    cap = cv2.VideoCapture(0)
+
+    # Check if the camera is opened successfully
+    if not cap.isOpened():
+        print("Error: Could not open camera.")
+        return
+
+    # Capture a frame
+    ret, frame = cap.read()
+
+    # Release the camera resource
+    cap.release()
+
+    # Check if the frame was captured successfully
+    if not ret:
+        print("Error: Could not capture frame.")
+        return
+
+    # Convert the OpenCV image (numpy array) to a PIL Image
+    image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+
+    # Resize the image
+    resized_image = image.resize(size, Image.ANTIALIAS)
+
+    # Save the resized image
+    resized_image.save(output_filename)
+
+    print(f"Image captured and resized successfully. Saved as {output_filename}.")

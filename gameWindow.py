@@ -2,20 +2,20 @@ from graphicInterface.graphics import *
 from graphicInterface.button import Button
 
 from character import Character
-from common import handle_input, log
+from common import handle_input, log, get_player_profile
 
 from datetime import datetime
 from time import time, ctime
 
 
 class GameWindow:   # This controls the UI and button functionality
-    def __init__(self, save_log):
-        self.window = GraphWin('RPG', 600, 600)     # Window set to 600x600
+    def __init__(self, save_log, change_profile=False):
         self.rooms = []
         self.character = Character()
 
         self.run_flag = True
         self.save_log = save_log
+        self.change_profile = change_profile
         self.start_time = time()
 
         # positions of items
@@ -33,8 +33,15 @@ class GameWindow:   # This controls the UI and button functionality
         self.labels = []
         self.control_buttons = []
 
+        if not change_profile:
+            self._instantiateGraphicMethods()
+
+    def _instantiateGraphicMethods(self):
+        self.window = GraphWin('RPG', 600, 600)  # Window set to 600x600
         self.__drawControlButtons()
         self.__drawRoomGrid()
+        self.window.update()
+        self.window.focus_set()
 
     def __drawRoomGrid(self):
         margin_x = 50
@@ -128,37 +135,39 @@ class GameWindow:   # This controls the UI and button functionality
 
     def _updatePlayerLocation(self):  # can add smoother graphics here if we want (see #animation.py)
         x, y = self.character.getCurrentPos()
+
         self.player_position.undraw()
-        self.player_position = Circle(self.display_matrix[x][y], 15)
-        self.player_position.setFill(color_rgb(0, 0, 0))
+        self.player_position = Image(self.display_matrix[x][y], self.character.character_sprite)
         self.player_position.draw(self.window)
 
     def _updateEnemyLocation(self):                         # It is likely that we can replace all the updatesItem/Enemy
-        enemies_positions = self.character.getEnemyPositions()
-        enemies = self.character.getEnemies()
+        enemies = list(self.character.getEnemies())
+        print(enemies)
+
         for pos in self.enemy_positions:
             pos.undraw()
 
-        for enemy_pos, enemy in zip(enemies_positions, enemies):
+        for enemy, enemy_pos in enemies:
             x, y = enemy_pos
-            # image = enemy.sprite_window
-            # image.draw(self.window)
-            position = Circle(self.display_matrix[x][y], 12)
-            position.setFill(color_rgb(230, 40, 40))
-            position.draw(self.window)
-            self.enemy_positions.append(position)
+            filename = enemy.sprite_window
+            enemy_png = Image(self.display_matrix[x][y], filename)
+            enemy_png.draw(self.window)
+            self.enemy_positions.append(enemy_png)
 
     def _updateItemLocation(self):
-        items = self.character.getItemPositions()
+        items = list(self.character.getItems())
+
         for pos in self.item_positions:
             pos.undraw()
 
-        for item_pos in items:
+        for item, item_pos in items:
             x, y = item_pos
-            position = Circle(self.display_matrix[x][y], 12)
-            position.setFill(color_rgb(70, 70, 160))
-            position.draw(self.window)
-            self.item_positions.append(position)
+            print(item_pos, item)
+
+            filename = item.sprite_map
+            item_png = Image(self.display_matrix[x][y], filename)
+            item_png.draw(self.window)
+            self.item_positions.append(item_png)
 
     def _updateShopLocation(self):
         shops = self.character.getShopPositions()
@@ -184,6 +193,10 @@ class GameWindow:   # This controls the UI and button functionality
             self.character.endGame()
 
     def startWindow(self):
+        if self.change_profile:
+            get_player_profile("player_sprite 50x50.png")   # change to correct directory
+            self._instantiateGraphicMethods()
+
         while self.run_flag:
             try:
                 self._updateTimer()
@@ -192,7 +205,7 @@ class GameWindow:   # This controls the UI and button functionality
                 self._updateEnemyLocation()
                 self._updateItemLocation()
                 self._updateShopLocation()
-            except GraphicsError:
+            except GraphicsError:       # can't draw to closed window error, meaning the user closed the window
                 print("Game ended...")
                 break
 

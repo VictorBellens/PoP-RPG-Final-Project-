@@ -11,5 +11,5 @@ from gameWindow import GameWindow
 
 
 if __name__ == '__main__':
-    gw = GameWindow(save_log=True)
+    gw = GameWindow(save_log=True, change_profile=False)
     gw.startWindow()
