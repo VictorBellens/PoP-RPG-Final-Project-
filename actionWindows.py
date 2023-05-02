@@ -318,11 +318,12 @@ class InventoryWindow:
 
 
 class StatsWindow:
-    def __init__(self, character):
-        self.window = GraphWin('Stats', 400, 400)
+    def __init__(self, character, supered=False):
+        if not supered:
+            self.window = GraphWin('Stats', 400, 400)
         self.character = character
 
-    def viewStats(self):
+    def viewStats(self, to_quit=True):
         max_hp = self.character.max_hp
         rooms_cleared = self.character.rooms_cleared
         atk = self.character.atk
@@ -345,7 +346,35 @@ class StatsWindow:
         for label in labels:
             label.draw(self.window)
 
-        get_exit(self)
+        if to_quit:
+            get_exit(self)
+
+
+class EndWindow(StatsWindow):
+    def __init__(self, character):
+        super().__init__(character, supered=True)
+        self.character = character
+        self.window = GraphWin('Stats', 400, 400)
+        self.result = None
+
+    def viewStatsWrapper(self):
+        StatsWindow.viewStats(self, to_quit=False)
+        exit_button = Button(self.window, Point(200, 360), 90, 30, 'Play again', None, 'r')
+        exit_button.activate()
+        try:
+            p, k = handle_input(self.window)
+        except GraphicsError:
+            print("Game ended...")
+
+        if (p is not None and exit_button.clicked(p)) or exit_button.pressed(k):
+            exit_button.deactivate()
+            log[datetime.now()] = exit_button.getLabel()[0]
+            self.result = True
+            exit_button.activate()
+
+    def getResult(self):
+        self.window.close()
+        return self.result
 
 
 class ShopWindow:

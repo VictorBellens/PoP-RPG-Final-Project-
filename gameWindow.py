@@ -16,6 +16,7 @@ class GameWindow:   # This controls the UI and button functionality
 
         self.run_flag = True
         self.save_log = save_log
+        self.start_time = time()
 
         # positions of items
         self.enemy_positions = []
@@ -198,13 +199,19 @@ class GameWindow:   # This controls the UI and button functionality
 
             if self.character.hp <= 0:          # NEEDS MORE WORK
                 self.window.close()
-                self.quit()
+                self.character.endGame()
+                if self.character.restart:
+                    print("Restarting game...")
+                    new_game = GameWindow(save_log=True)
+                    new_game.startWindow()
+                else:
+                    self.run_flag = False
 
             try:
                 p, k = handle_input(self.window)
             except GraphicsError:
                 print("Game ended...")
-                self.character.viewStats()
+                self.character.endGame()
                 break
 
             for button in self.control_buttons:
@@ -217,6 +224,11 @@ class GameWindow:   # This controls the UI and button functionality
 
                     self.window.update()
                     self.window.focus_set()
+
+        if self.character.restart:
+            print("Restarting game...")
+            new_game = GameWindow(save_log=True)
+            new_game.startWindow()
 
     def quit(self):
         if self.save_log:

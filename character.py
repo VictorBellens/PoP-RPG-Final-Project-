@@ -1,5 +1,5 @@
 from room import Room
-from actionWindows import AttackWindow, ShopWindow, InventoryWindow, ItemWindow, StatsWindow
+from actionWindows import AttackWindow, ShopWindow, InventoryWindow, ItemWindow, StatsWindow, EndWindow
 from time import time
 
 
@@ -22,6 +22,7 @@ class Character:    # This is responsible for the character attributes, and all 
         self.start_time = time()
         self.allowed_time = 2 * 60  # 2 minutes
         self.elapsed_time = 0
+        self.restart = False
 
         self.inventory = []
 
@@ -185,6 +186,13 @@ class Character:    # This is responsible for the character attributes, and all 
         else:
             print("Hp increased")
             self.hp += val
+
+    def endGame(self):
+        print("Ending game...")
+        finalWindow = EndWindow(self)
+        finalWindow.viewStatsWrapper()
+        if finalWindow.getResult():
+            self.restart = True
 
     def useMaxHealthItem(self, val):
         print("Max health increased")
