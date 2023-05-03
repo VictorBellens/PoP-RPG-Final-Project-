@@ -127,15 +127,6 @@ class AttackWindow:
         text.draw(self.window)
         self.enemy_labels.append(text)
 
-    def _updateLabels(self):
-        pass
-
-    def _playerLabels(self):
-        pass
-
-    def _enemyLabels(self):
-        pass
-
     def _winDisplay(self):
         gold_obtained = self.enemy.lvl * 10
         xp_obtained = self.enemy.lvl * 15                # xp level increase here
@@ -170,7 +161,6 @@ class AttackWindow:
 
             if self.enemy.hp <= 0:
                 self._winDisplay()
-
             elif self.character.hp <= 0:
                 self._loseDisplay()
 

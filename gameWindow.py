@@ -9,7 +9,7 @@ from time import time, ctime
 
 
 class GameWindow:   # This controls the UI and button functionality
-    def __init__(self, save_log):
+    def __init__(self, save_log=True):
         self.rooms = []
         self.character = Character()
 
@@ -31,9 +31,7 @@ class GameWindow:   # This controls the UI and button functionality
         self.inventory_buttons = []
         self.labels = []
         self.control_buttons = []
-        self._instantiateGraphicMethods()
 
-    def _instantiateGraphicMethods(self):
         self.window = GraphWin('RPG', 600, 600)  # Window set to 600x600
         self.__drawControlButtons()
         self.__drawRoomGrid()
@@ -186,7 +184,7 @@ class GameWindow:   # This controls the UI and button functionality
             self.window.close()
             self.character.endGame()
 
-    def startWindow(self):
+    def startWindow(self):  # This is the main loop of the game
         while self.run_flag:
             try:
                 self._updateTimer()
@@ -199,12 +197,12 @@ class GameWindow:   # This controls the UI and button functionality
                 print("Game ended...")
                 break
 
-            if self.character.hp <= 0:          # NEEDS MORE WORK
+            if self.character.hp <= 0:
                 self.window.close()
                 self.character.endGame()
                 if self.character.restart:
                     print("Restarting game...")
-                    new_game = GameWindow(save_log=True)
+                    new_game = GameWindow()
                     new_game.startWindow()
                 else:
                     self.run_flag = False

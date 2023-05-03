@@ -9,15 +9,17 @@ class Character:    # This is responsible for the character attributes, and all 
     def __init__(self):
         self.max_hp = 100
         self.hp = self.max_hp
-        self.atk = 10           # debugging for AttackWindow
-        self.name = None
+        self.atk = 10
+        # self.name = None
         self.gold = 100
+
         self.gold_accumulated = 0
         self.enemies_killed = 0
         self.level = 1
         self.to_next_level = 0/100
         self.is_shielded = False
-        self.health_item, self.max_hp_item, self.attack_item = True, True, True
+
+        self.health_item, self.max_hp_item, self.attack_item = True, True, True # for the narrative
 
         self.ultimate_attribute = 500
         self.ultimate_available = 1
@@ -38,9 +40,6 @@ class Character:    # This is responsible for the character attributes, and all 
 
     def getCurrentPos(self):
         return self.current_pos
-
-    def shop(self):  # likely will be moved to room class
-        pass
 
     def getHp(self):
         return self.hp, self.max_hp
@@ -96,7 +95,7 @@ class Character:    # This is responsible for the character attributes, and all 
     def moveEast(self):
         self.newPos(0, -1)
 
-    def moveWest(self):     # (self, item_count, enemy_count, barrier_count, shop_count, xp_level):
+    def moveWest(self):
         self.newPos(0, 1)
 
     def getNextRoom(self):      # rng will be in #room.py, the var below are only for XP level/difficulty
@@ -104,7 +103,7 @@ class Character:    # This is responsible for the character attributes, and all 
         enemy_count = 25
         shop_count = 0
 
-        if self.rooms_cleared % 2 == 0:      # Change this to a higher number later
+        if self.rooms_cleared % 2 == 0:
             shop_count = 100
 
         self.current_room = Room(item_count, enemy_count, shop_count, self.level)
