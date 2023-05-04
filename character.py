@@ -19,7 +19,8 @@ class Character:    # This is responsible for the character attributes, and all 
         self.to_next_level = 0/100
         self.is_shielded = False
 
-        self.health_item, self.max_hp_item, self.attack_item = True, True, True # for the narrative
+        self.health_item, self.max_hp_item, self.attack_item = True, True, True     # for the narrative
+        self.lvl3_enemy, self.lvl_3_enemy = False, False
 
         self.ultimate_attribute = 500
         self.ultimate_available = 1
@@ -112,6 +113,8 @@ class Character:    # This is responsible for the character attributes, and all 
     def checkLevel(self):
         if self.to_next_level >= 1:
             self.level += 1
+            if self.level == 1:
+                LabelWindow(narrative["lvl_up"])
             self.to_next_level = self.to_next_level - 1
 
     def performAction(self):
@@ -176,6 +179,15 @@ class Character:    # This is responsible for the character attributes, and all 
 
         if item.name == "Attack" and self.attack_item:
             LabelWindow(narrative["item_attack"])
+            self.attack_item = False
+
+        elif item.name == "HP" and self.health_item:
+            LabelWindow(narrative["item_health"])
+            self.health_item = False
+
+        elif item.name == "Max HP" and self.max_hp_item:
+            LabelWindow(narrative["item_max_hp"])
+            self.max_hp_item = False
 
         itemUse.useItem()
         if itemUse.getResult():

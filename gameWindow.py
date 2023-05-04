@@ -165,16 +165,18 @@ class GameWindow:   # This controls the UI and button functionality
             self.item_positions.append(item_png)
 
     def _updateShopLocation(self):
-        shops = self.character.getShopPositions()
+        shops = self.character.getShops()
+        shop_positions = self.character.getShopPositions()
+        print(shops)
         for pos in self.shop_positions:
             pos.undraw()
 
-        for shop_pos in shops:
+        for shop, shop_pos in zip(shops, shop_positions):
             x, y = shop_pos
-            position = Circle(self.display_matrix[x][y], 12)
-            position.setFill(color_rgb(230, 230, 0))
-            position.draw(self.window)
-            self.shop_positions.append(position)
+            filename = shop.sprite_map
+            shop_png = Image(self.display_matrix[x][y], filename)
+            shop_png.draw(self.window)
+            self.shop_positions.append(shop_png)
 
     def _updateTimer(self):
         self.character.elapsed_time = (time() - self.character.start_time) - (15 * self.character.enemies_killed)

@@ -10,14 +10,27 @@ import graphicInterface.graphics
 """VARS"""
 log = {}
 narrative = {
-    "spawn": "Welcome to the world!",       # MISC
-    "before_first_kill": "I have aids",
-    "after_first_kill": "and the clap",
-    "item_health": "You have encountered a health item!"
-                   "This will increase your health by a"
+    "spawn": "Welcome to this world,\n"
+             " a place you may not want to be,\n"
+             " if you survive a long time you will succeed!",
+    "before_first_kill": "You have encountered your first enemy!\n"
+                         "They will get stronger with your level!,\n"
+                         " be careful",
+    "after_first_kill": "Well done on conquering your first monster!\n"
+                        "In this world, they will keep coming,\n"
+                        " be ready to die!",
+    "item_health": "You have encountered a health item!\n"
+                   "This will increase your health by a\n"
                    "certain amount depending on your xp level",
     "item_max_hp": "",
     "item_attack": "",
+    "lvl_up": "",
+    "lvl2_kill": "",
+    "lvl3_kill": "",
+    "next_room": "",
+    "d": "",
+    "e": "",
+
 }
 
 
@@ -106,7 +119,6 @@ def get_exit(obj):
         try:
             p, k = handle_input(obj.window)
         except graphicInterface.graphics.GraphicsError:     # handles force closing window
-            print("TOUCHED")
             obj.run_flag = False
             obj.window.close()
             break
@@ -162,8 +174,6 @@ def settings():
             change_profile = False
         else:
             print("\n===ERROR===\nPlease input a valid value\n")
-
-    return change_profile
 
 
 def delete_player_sprite():

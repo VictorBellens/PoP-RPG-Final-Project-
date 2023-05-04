@@ -12,6 +12,6 @@ from common import settings
 
 
 if __name__ == '__main__':
-    cp = settings()
+    # settings()
     gw = GameWindow(save_log=True)
     gw.startWindow()

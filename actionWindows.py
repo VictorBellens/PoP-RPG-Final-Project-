@@ -483,7 +483,7 @@ class LabelWindow:
         self.window = GraphWin("Narrative", self.window_size[0], self.window_size[1])
         self.window.focus_set()
 
-        self.text = Text(Point(100, 100), self.label)
+        self.text = Text(Point(self.window_size[0]/2, self.window_size[1]/2), self.label)
         self.text.setSize(12)
         self.text.setStyle("bold")
         self.text.draw(self.window)
@@ -493,8 +493,8 @@ class LabelWindow:
     def __getWindowSize(self):
         text_size = len(self.label)
         if text_size < 150:
-            return 200, 200
+            return 400, 200
         elif text_size < 300:
-            return 300, 200
+            return 500, 200
         else:
-            return 400, 300
+            return 600, 300

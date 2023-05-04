@@ -3,7 +3,7 @@ class HealthItem:
         self.name = 'HP'
         self.health_added = 10 * level
         self.is_selected = False
-        self.sprite_map = 'health&attackItems/Health_item55x55.png'
+        self.sprite_map = 'itemsMap/health_item_55x55.png'
         self.sprite_window = None
 
     def getAttribute(self):
@@ -16,7 +16,7 @@ class MaxHealthItem:
         self.name = 'Max HP'
         self.max_health_added = 10 * level
         self.is_selected = False
-        self.sprite_map = 'health&attackItems/max_health_item_55x55.png'
+        self.sprite_map = 'itemsMap/max_health_item_55x55.png'
         self.sprite_window = None
 
     def getAttribute(self):
@@ -37,11 +37,11 @@ class AttackItem:
         filename = None
 
         if self.level < 5:
-            filename = 'spriteMap/Green Monster 55x55.png'
+            filename = 'itemsMap/attack_item_3_55x55.png'
         elif 5 <= self.level < 10:
-            filename = 'spriteMap/PurpleMonst2 55x55.png'
+            filename = 'itemsMap/attack_item_1_55x55.png'
         elif self.level > 10:
-            filename = 'spriteMap/Red Monster 55x55.png'
+            filename = 'itemsMap/attack_item_2_55x55.png'
 
         return filename
 
@@ -49,11 +49,11 @@ class AttackItem:
         filename = None
 
         if self.level < 5:
-            filename = 'spriteActionWindow/Green Monster 148x148.png'
+            filename = 'itemsWindow/attack_item_3_100x100.png'
         elif 5 <= self.level < 10:
-            filename = 'spriteActionWindow/PurpleMonst2 148x148.png'
+            filename = 'itemsWindow/attack_item_1_100x100.png'
         elif self.level > 10:
-            filename = 'spriteActionWindow/Red Monster 148x148.png'
+            filename = 'itemsWindow/attack_item_2_100x100.png'
 
         return filename
 
@@ -65,5 +65,5 @@ class AttackItem:
 class Shop:
     def __init__(self, xp_level):   # This will contain the methods needed for generating/using the shops
         self.player_xp_level = xp_level
-        self.sprite_map = 'health&attackItems/Health_item55x55.png'  # CHANGE THIS AFTER BOZO
-        self.sprite_window = None
+        self.sprite_map = 'itemsMap/shop_55x55.png'
+        self.sprite_window = 'itemsWindow/shop_100x100.png'
