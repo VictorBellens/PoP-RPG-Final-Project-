@@ -10,7 +10,7 @@ class Character:    # This is responsible for the character attributes, and all 
         self.max_hp = 100
         self.hp = self.max_hp
         self.atk = 10
-        # self.name = None
+        # self.name = None          # 0 implementation
         self.gold = 100
 
         self.gold_accumulated = 0
@@ -20,7 +20,7 @@ class Character:    # This is responsible for the character attributes, and all 
         self.is_shielded = False
 
         self.health_item, self.max_hp_item, self.attack_item = True, True, True     # for the narrative
-        self.lvl3_enemy, self.lvl_3_enemy = False, False
+        self.lvl_2_enemy, self.lvl_3_enemy = False, False
 
         self.ultimate_attribute = 500
         self.ultimate_available = 1
@@ -162,6 +162,14 @@ class Character:    # This is responsible for the character attributes, and all 
     def attackEnemy(self, enemy):           # here is where we need to implement the attack functions.
         if self.enemies_killed == 0:
             LabelWindow(narrative["before_first_kill"])
+            self.lvl_2_enemy = True
+        elif self.lvl_2_enemy and self.level == 5:
+            LabelWindow(narrative["lvl_2_kill"])
+            self.lvl_2_enemy = False
+            self.lvl_3_enemy = True
+        elif self.lvl_3_enemy and self.level > 10:
+            LabelWindow(narrative["lvl_3_kill"])
+            self.lvl_3_enemy = False
 
         print("Running attack enemy method")
         enemyAttack = AttackWindow(self, enemy)

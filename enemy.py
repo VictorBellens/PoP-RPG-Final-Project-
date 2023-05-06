@@ -89,8 +89,3 @@ class Enemy:
 
     def getName(self):
         return self.name
-
-
-class Boss(Enemy):
-    def __init__(self, character_level):  # This will be responsible for the boss attack attributes/rewards/etc.
-        Enemy.__init__(self, character_level)

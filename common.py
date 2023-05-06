@@ -10,23 +10,23 @@ import graphicInterface.graphics
 """VARS"""
 log = {}
 narrative = {
-    "spawn": "Welcome to this world,\n"
+    "spawn": "Welcome to this world,\n"     # complete
              " a place you may not want to be,\n"
              " if you survive a long time you will succeed!",
-    "before_first_kill": "You have encountered your first enemy!\n"
+    "before_first_kill": "You have encountered your first enemy!\n"     # complete
                          "They will get stronger with your level!,\n"
                          " be careful",
-    "after_first_kill": "Well done on conquering your first monster!\n"
+    "after_first_kill": "Well done on conquering your first monster!\n"     # complete
                         "In this world, they will keep coming,\n"
                         " be ready to die!",
-    "item_health": "You have encountered a health item!\n"
+    "item_health": "You have encountered a health item!\n"      # complete
                    "This will increase your health by a\n"
                    "certain amount depending on your xp level",
-    "item_max_hp": "",
-    "item_attack": "",
-    "lvl_up": "",
-    "lvl2_kill": "",
-    "lvl3_kill": "",
+    "item_max_hp": "",      # impl.
+    "item_attack": "",      # impl.
+    "lvl_up": "",           # impl.
+    "lvl_2_kill": "",
+    "lvl_3_kill": "",
     "next_room": "",
     "d": "",
     "e": "",
