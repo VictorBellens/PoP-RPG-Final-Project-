@@ -2,7 +2,7 @@ import random
 
 
 class Enemy:
-    def __init__(self, chr_lvl, *args):
+    def __init__(self, chr_lvl, *args):     # handles the enemy methods
         self.hp = 100 * chr_lvl  # DEBUG
         self.max_hp = 100 * chr_lvl
         self.atk = 5 * chr_lvl
@@ -10,8 +10,8 @@ class Enemy:
         self.lvl = chr_lvl
         self.is_dead = False
         self.no_attack_for = 0
-        self.location = args[0]
-        self.sprite_window = self.__getMapImage()
+        self.location = args[0]     # location as args[0] as some enemies are dead
+        self.sprite_window = self.__getMapImage()       # different sprite sizes for map/window
         self.sprite_action_window = self.__getWindowImage()
 
     def __getMapImage(self):  # takes the enemy level, finds the image corresponding enemy level, then returns the image
@@ -38,27 +38,27 @@ class Enemy:
 
         return filename
 
-    def checkIsDead(self):
+    def checkIsDead(self):      # checks if the enemy is dead
         if self.hp <= 0:
             self.is_dead = True
 
-    def getResponse(self, character, action):  # str(action)[29] represents which action the user used (a/d/u/f)
-        response = str(action)[29]
+    def getResponse(self, character, action):   # gets the response to the character action
+        response = str(action)[29]      # Represents which action the user used (a/d/u/f)
         chance = random.random()
 
-        if self.no_attack_for != 0:
+        if self.no_attack_for != 0:     # checks if the player is defended
             self.no_attack_for -= 1
             return 'defended', 'green'
 
         else:
-            if response == 'a':
+            if response == 'a':     # retaliates with attack
                 if chance > 0.3:
                     character.hp -= self.atk
                     return f'-{self.atk} HP', 'red'
                 else:
                     return 'Missed', 'green'
 
-            elif response == 'd':
+            elif response == 'd':       # retaliates with attack
                 character.hp -= self.atk
 
                 if character.is_shielded:
@@ -68,7 +68,7 @@ class Enemy:
 
                 return f'-{self.atk} HP', 'red'
 
-            elif response == 'u':
+            elif response == 'u':       # checks if the user can use ultimate, if so, then uses, otherwise, it fails.
                 if character.ultimate_available != 0:
                     character.ultimate_available -= 1
                     self.hp -= character.ultimate_attribute
@@ -79,13 +79,13 @@ class Enemy:
                     character.hp -= self.atk
                     return f'-{self.atk} HP', 'red'
 
-            elif response == 'f':
+            elif response == 'f':       # if the user has fled, there is no response from the enemy
                 pass
 
-            else:
+            else:   # if the response is not valid, meaning the objects are saved in a different format.
                 raise Exception("The game needs to be changed for your device (see the documentation)")
 
             return 'response', 'green'
 
-    def getName(self):
+    def getName(self):      # returns the name of the enemy (0 implementation)
         return self.name

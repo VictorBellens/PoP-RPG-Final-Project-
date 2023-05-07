@@ -62,7 +62,7 @@ class Button:
 
 
 class InventoryButton(Button):
-    def __init__(self, win, center, width, height, label, action, key, *args):
+    def __init__(self, win, center, width, height, label, action, key, *args):  # this is the inventory buttons required
         try:
             self.image = args[0]
         except IndexError:

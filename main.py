@@ -12,6 +12,6 @@ from common import settings
 
 
 if __name__ == '__main__':
-    # settings()
-    gw = GameWindow(save_log=True)
-    gw.startWindow()
+    # settings()            # runs the settings for the game
+    gw = GameWindow(save_log=True)      # instantiates game window object
+    gw.startWindow()        # runs the main loop

@@ -36,9 +36,9 @@ class GameWindow:   # This controls the UI and button functionality
         self.__drawControlButtons()
         self.__drawRoomGrid()
         self.window.update()
-        self.window.focus_set()
+        self.window.focus_set()     # sets focus on the game window
 
-    def __drawRoomGrid(self):
+    def __drawRoomGrid(self):   # draws the grid for the room (where the size is always teh same.))
         margin_x = 50
         margin_y = 50
         grid_width = 500
@@ -71,7 +71,7 @@ class GameWindow:   # This controls the UI and button functionality
 
             self.display_matrix.append(row)
 
-    def __drawControlButtons(self):
+    def __drawControlButtons(self):     # draws the main control buttons and adds them to the button list
         Rectangle(Point(50, 50), Point(550, 400)).draw(self.window)  # where the game matrix will be displayed
         sc = self.character
 
@@ -89,7 +89,7 @@ class GameWindow:   # This controls the UI and button functionality
         for button in self.control_buttons:
             button.activate()
 
-    def _updateLabels(self):
+    def _updateLabels(self):        # updates all labels that would be changed.
         self.character.checkLevel()
         for label in self.labels:
             label.undraw()
@@ -128,14 +128,14 @@ class GameWindow:   # This controls the UI and button functionality
         for label in self.labels:
             label.draw(self.window)
 
-    def _updatePlayerLocation(self):  # can add smoother graphics here if we want (see #animation.py)
+    def _updatePlayerLocation(self):  # updates the player location, we can implement animation here.
         x, y = self.character.getCurrentPos()
 
         self.player_position.undraw()
         self.player_position = Image(self.display_matrix[x][y], self.character.character_sprite)
         self.player_position.draw(self.window)
 
-    def _updateEnemyLocation(self):                         # It is likely that we can replace all the updatesItem/Enemy
+    def _updateEnemyLocation(self):     # updates all the enemy locations
         enemies = list(self.character.getEnemies())
         print(enemies)
 
@@ -149,7 +149,7 @@ class GameWindow:   # This controls the UI and button functionality
             enemy_png.draw(self.window)
             self.enemy_positions.append(enemy_png)
 
-    def _updateItemLocation(self):
+    def _updateItemLocation(self):      # updates all the item locations
         items = list(self.character.getItems())
 
         for pos in self.item_positions:
@@ -164,7 +164,7 @@ class GameWindow:   # This controls the UI and button functionality
             item_png.draw(self.window)
             self.item_positions.append(item_png)
 
-    def _updateShopLocation(self):
+    def _updateShopLocation(self):      # updates all the shop locations
         shops = self.character.getShops()
         shop_positions = self.character.getShopPositions()
         print(shops)
@@ -178,7 +178,7 @@ class GameWindow:   # This controls the UI and button functionality
             shop_png.draw(self.window)
             self.shop_positions.append(shop_png)
 
-    def _updateTimer(self):
+    def _updateTimer(self):     # checks the timer, and updates the display
         self.character.elapsed_time = (time() - self.character.start_time) - (15 * self.character.enemies_killed)
         if self.character.elapsed_time < 0:
             self.character.elapsed_time = 0
@@ -199,10 +199,10 @@ class GameWindow:   # This controls the UI and button functionality
                 print("Game ended...")
                 break
 
-            if self.character.hp <= 0:
+            if self.character.hp <= 0:      # checks if the player is dead
                 self.window.close()
                 self.character.endGame()
-                if self.character.restart:
+                if self.character.restart:      # restarting the game
                     print("Restarting game...")
                     new_game = GameWindow()
                     new_game.startWindow()
@@ -211,26 +211,26 @@ class GameWindow:   # This controls the UI and button functionality
 
             try:
                 p, k = handle_input(self.window)
-            except GraphicsError:
+            except GraphicsError:       # can't draw to a closed window error, meaning the user closed the window
                 print("Game ended...")
                 self.character.viewStats()
                 break
 
             for button in self.control_buttons:
-                if (p is not None and button.clicked(p)) or button.pressed(k):
+                if (p is not None and button.clicked(p)) or button.pressed(k):      # checks which button was pressed
                     button.deactivate()
-                    log[datetime.now()] = button.getLabel()[0]
+                    log[datetime.now()] = button.getLabel()[0]      # logs the action
                     action = button.getAction()
-                    action()
+                    action()        # runs the specified action (see __drawControlButtons())
                     button.activate()
 
                     self.window.update()
                     self.window.focus_set()
 
-    def quit(self):
-        delete_player_sprite()
+    def quit(self):     # quits the game
+        delete_player_sprite()      # delete the player sprite file
         if self.save_log:
-            with open('logFile.txt', 'w', encoding='utf-8') as logfile:
+            with open('logFile.txt', 'w', encoding='utf-8') as logfile:     # logging the log to logFile.txt
                 logfile.write(f'Log from {str(datetime.now())[:11]}\nTotal actions: {len(log)}\n')
                 logfile.write(f'Start time: {str(list(log.keys())[0])[11:19]}\n'
                               f'End time:   {str(list(log.keys())[-1])[11:19]}')

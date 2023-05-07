@@ -1,14 +1,18 @@
 import pandas as pd
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
 import numpy as np
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+import statsmodels.formula.api as smf
+
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 from sklearn.model_selection import train_test_split
+from statsmodels.stats.outliers_influence import OLSInfluence
+from statsmodels.nonparametric.smoothers_lowess import lowess
 
 filename = "EcomExpense.csv"
 
 data = pd.read_csv(filename, index_col=0)
-train, test = train_test_split(data, test_size = 0.25, random_state = 2023)
+train, test = train_test_split(data, test_size=0.25, random_state=2023)
 train.head()
 
 
@@ -99,6 +103,58 @@ def ols_model(df):
                     "Record + Gender_Male + City_Tier_Tier_2 + City_Tier_Tier_3"
     model = smf.ols(formula=model_formula, data=df).fit()
     print(model.summary())
+    ols_resid_plots(model)
+
+
+def ols_resid_plots(model):
+    # Generate the residual values
+    residuals = model.resid
+    standarized_residuals = OLSInfluence(model).resid_studentized_internal
+    fitted_values = model.fittedvalues
+    leverage = OLSInfluence(model).hat_matrix_diag
+
+    # Set up the figure and the subplots
+    fig, axs = plt.subplots(nrows=3, ncols=3, figsize=(15, 15))
+
+    axs[0, 0].scatter(fitted_values, residuals, alpha=0.5)
+    axs[0, 0].axhline(y=0, color='blue', linestyle='--')
+    axs[0, 0].set_xlabel('Fit values')
+    axs[0, 0].set_ylabel('Residuals')
+
+    # Add a regression line to the scatterplot
+    smooth_data = lowess(residuals, fitted_values)
+    axs[0, 0].plot(smooth_data[:, 0], smooth_data[:, 1], color='red', alpha=0.5, lw=2)
+
+    # Top-right: QQ plot for standarized residuals
+    sm.graphics.qqplot(standarized_residuals, ax=axs[0, 1], line='45')
+
+    # Bottom-left: Fit values vs Squared Root of Standarized residuals
+    axs[1, 0].scatter(fitted_values, np.sqrt(np.abs(standarized_residuals)), alpha=0.5)
+    axs[1, 0].set_xlabel('Fit values')
+    axs[1, 0].set_ylabel('square root(|Standarized residuals|)')
+
+    # Add a Lowess smoother line that fits the best with the data
+    smooth_data = lowess(np.sqrt(np.abs(standarized_residuals)), fitted_values)
+    axs[1, 0].plot(smooth_data[:, 0], smooth_data[:, 1], color='brown', alpha=0.5)
+
+    # Bottom-right: Residuals vs Leverage plot
+    axs[1, 1].scatter(leverage, standarized_residuals, alpha=0.5)
+    axs[1, 1].set_xlabel('Leverage')
+    axs[1, 1].set_ylabel('Standarized residuals')
+
+    nobs = model.nobs
+    p = len(model.params)
+    cd = OLSInfluence(model).cooks_distance
+    idx = np.where(cd[0] > 0.5)[0]
+    for i in idx:
+        axs[1, 1].annotate('', xy=(leverage[i], standarized_residuals[i]),
+                           xytext=(leverage[i] + 0.05, standarized_residuals[i]),
+                           arrowprops=dict(arrowstyle='->', lw=1.5, color='red', alpha=0.5))
+        axs[1, 1].annotate(i, xy=(leverage[i], standarized_residuals[i]),
+                           xytext=(leverage[i] + 0.05, standarized_residuals[i]), color='red', alpha=0.5)
+
+    plt.tight_layout()
+    plt.show()
 
 
 if __name__ == '__main__':
@@ -106,5 +162,3 @@ if __name__ == '__main__':
     extract_from_model(model)
     cleaned = dummify_model()
     ols_model(cleaned)
-
-

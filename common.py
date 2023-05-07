@@ -65,7 +65,7 @@ buy_5 = '5'
 exit_shop = '6'
 
 
-def handle_input(window):
+def handle_input(window):       # handles the input from keyboard events
     p = None
     k = None
 
@@ -114,7 +114,8 @@ def handle_input(window):
     return p, k
 
 
-def get_exit(obj):
+def get_exit(obj):      # this is the get_exit method that most of the ActionWindows use, essentially just cleans the
+                        # code so that there won't be any errors
     while True:
         try:
             p, k = handle_input(obj.window)
@@ -127,23 +128,23 @@ def get_exit(obj):
                 obj.run_flag = False
                 obj.window.close()
                 break
-        except AttributeError:      # happens when p and k are not set
+        except AttributeError:      # happens when p and k are not set (just runs again)
             continue
 
 
-def get_player_profile(output_filename,  size=(50, 35)):
+def get_player_profile(output_filename,  size=(50, 35)):        # gets the new player profile image
     print("Changing your player profile...\nGet ready for a photo!")
     cap = cv2.VideoCapture(0)
 
-    if not cap.isOpened():
+    if not cap.isOpened():      # camera didn't open
         print("Error: Could not open camera.")
         return
 
-    for n in range(3):
+    for n in range(3):      # timer for the photo
         print(3 - n)
         time.sleep(1)
 
-    ret, frame = cap.read()
+    ret, frame = cap.read()     # captures camera contents
     cap.release()
 
     if not ret:
@@ -152,12 +153,12 @@ def get_player_profile(output_filename,  size=(50, 35)):
 
     image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
     resized_image = image.resize(size, Image.ANTIALIAS)
-    resized_image.save(output_filename)
+    resized_image.save(output_filename)     # saves the image in the right dir
 
     print(f"Image saved successfully @ {output_filename}.")
 
 
-def settings():
+def settings():     # settings for the game
     print("===SETTINGS===")
     change_profile = True
     print("You can change the image of your character, we do not recommend this,"
@@ -176,13 +177,13 @@ def settings():
             print("\n===ERROR===\nPlease input a valid value\n")
 
 
-def delete_player_sprite():
+def delete_player_sprite():     # deletes the player sprite
     if exists("spriteMap/Player_custom 55x55.png"):
         remove("spriteMap/Player_custom 55x55.png")
         print("Custom profile image deleted.")
 
 
-def get_character_sprite():
+def get_character_sprite():     # gets the character sprite
     if exists("spriteMap/Player_custom 55x55.png"):
         return "spriteMap/Player_custom 55x55.png"
     else:

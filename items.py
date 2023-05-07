@@ -1,18 +1,18 @@
-class HealthItem:
+class HealthItem:       # the health item object
     def __init__(self, level):
         self.name = 'HP'
-        self.health_added = 10 * level
+        self.health_added = 10 * level  # scaling factor for the game level
         self.is_selected = False
-        self.sprite_map = 'itemsMap/health_item_55x55.png'
+        self.sprite_map = 'itemsMap/health_item_55x55.png'  # health item sprite
         self.sprite_window = None
 
-    def getAttribute(self):
+    def getAttribute(self):     # returns the attribute amount, whilst also setting the item to 'used'
         self.is_selected = True
         return self.health_added
 
 
 class MaxHealthItem:
-    def __init__(self, level):
+    def __init__(self, level):      # same concept as above but for max health
         self.name = 'Max HP'
         self.max_health_added = 10 * level
         self.is_selected = False
@@ -25,7 +25,7 @@ class MaxHealthItem:
 
 
 class AttackItem:
-    def __init__(self, level):
+    def __init__(self, level):      # same concept as above but for an attack item
         self.name = 'Attack'
         self.attack_added = 5 * level
         self.is_selected = False
@@ -45,7 +45,7 @@ class AttackItem:
 
         return filename
 
-    def __getWindowImage(self):
+    def __getWindowImage(self):     # same, but for the window sprites.
         filename = None
 
         if self.level < 5:
@@ -63,7 +63,7 @@ class AttackItem:
 
 
 class Shop:
-    def __init__(self, xp_level):   # This will contain the methods needed for generating/using the shops
+    def __init__(self, xp_level):   # shop object on the map
         self.player_xp_level = xp_level
         self.sprite_map = 'itemsMap/shop_55x55.png'
         self.sprite_window = 'itemsWindow/shop_100x100.png'
