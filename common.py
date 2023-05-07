@@ -9,7 +9,7 @@ import graphicInterface.graphics
 
 """VARS"""
 log = {}
-narrative = {
+narrative = {       # this is where the narrative prompts are stored, and the corresponding narrative line
     "spawn": "Welcome to this world,\n"     # complete
              " a place you may not want to be,\n"
              " if you survive a long time you will succeed!",
