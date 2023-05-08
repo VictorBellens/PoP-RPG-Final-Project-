@@ -9,25 +9,26 @@ import graphicInterface.graphics
 
 """VARS"""
 log = {}
-narrative = {       # this is where the narrative prompts are stored, and the corresponding narrative line
-    "spawn": "Welcome to this world,\n"     # complete
+narrative = {
+    "spawn": "Welcome to the world where survival is key,\n"     # complete
              " a place you may not want to be,\n"
-             " if you survive a long time you will succeed!",
+             " if you survive a long time you will succeed!,\n"
+             "clear as many rooms and your life will be at ease",
     "before_first_kill": "You have encountered your first enemy!\n"     # complete
-                         "They will get stronger with your level!,\n"
-                         " be careful",
+                         "They will get stronger the higher your level!,\n"
+                         " be careful and don't get fooled, they can be quite tricky",
     "after_first_kill": "Well done on conquering your first monster!\n"     # complete
-                        "In this world, they will keep coming,\n"
-                        " be ready to die!",
+                        "Be ready, they will keep coming,\n"
+                        " are you prepared to die?",
     "item_health": "You have encountered a health item!\n"      # complete
                    "This will increase your health by a\n"
                    "certain amount depending on your xp level",
-    "item_max_hp": "",      # impl.
-    "item_attack": "",      # impl.
-    "lvl_up": "",           # impl.
-    "lvl_2_kill": "",
-    "lvl_3_kill": "",
-    "next_room": "",
+    "item_max_hp": "Good one! This will increase your hp by 10. Use it wisely!",      # impl.
+    "item_attack": "Cool! You can now absorb its power and have a stronger attack.",      # impl.
+    "lvl_up": "Congratulations! You just leveled up, keep it up!",           # impl.
+    "lvl_2_kill": "Amazing! You just killed a level 5 monster",
+    "lvl_3_kill": "What a talent you are! You just killed a level 11 monster, the strongest monster out there!",
+    "next_room": "You have managed to clear your first room, good job! Are you ready for the next one? It will get harder!",
     "d": "",
     "e": "",
 
