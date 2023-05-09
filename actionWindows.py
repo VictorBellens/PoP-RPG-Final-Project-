@@ -389,15 +389,15 @@ class ShopWindow:
         self.character = character
         self.runFlag = True
 
-        self.buttons = [Button(self.window, Point(1, 3), 1.5, 0.6, "25% HP Recovery (50 gold)",
+        self.buttons = [Button(self.window, Point(1, 3), 1.5, 0.6, "25% HP (50 gold)",
                                self.buyHpRecovery25, '1'),
-                        Button(self.window, Point(1, 2.25), 1.5, 0.6, "50% HP Recovery (100 gold)",
+                        Button(self.window, Point(1, 2.25), 1.5, 0.6, "50% HP (100 gold)",
                                self.buyHpRecovery50, '2'),
-                        Button(self.window, Point(1, 1.5), 1.5, 0.6, "100% HP Recovery (200 gold)",
+                        Button(self.window, Point(1, 1.5), 1.5, 0.6, "100% HP (200 gold)",
                                self.buyHpRecovery100, '3'),
-                        Button(self.window, Point(3, 3), 1.5, 0.6, "Attack Boost +10 (100 gold)",
+                        Button(self.window, Point(3, 3), 1.5, 0.6, "ATK +10 (100 gold)",
                                self.buyAttackBoost10, '4'),
-                        Button(self.window, Point(3, 2.25), 1.5, 0.6, "Ultimate Power Boost (1000 gold)",
+                        Button(self.window, Point(3, 2.25), 1.5, 0.6, "Ult +1 (1000 gold)",
                                self.buyUltimatePowerBoost1000, '5'),
                         Button(self.window, Point(3, 1.5), 1.5, 0.6, "Leave", self.leaveShop, '6')
                         ]   # the buttons for the shop window
