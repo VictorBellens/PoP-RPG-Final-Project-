@@ -4,7 +4,7 @@ class HealthItem:       # the health item object
         self.health_added = 10 * level  # scaling factor for the game level
         self.is_selected = False
         self.sprite_map = 'itemsMap/health_item_55x55.png'  # health item sprite
-        self.sprite_window = None
+        self.sprite_window = 'itemsWindow/health_item_100x100.png'
 
     def getAttribute(self):     # returns the attribute amount, whilst also setting the item to 'used'
         self.is_selected = True
@@ -17,7 +17,7 @@ class MaxHealthItem:
         self.max_health_added = 10 * level
         self.is_selected = False
         self.sprite_map = 'itemsMap/max_health_item_55x55.png'
-        self.sprite_window = None
+        self.sprite_window = 'itemsWindow/max_health_item_100x100.png'
 
     def getAttribute(self):
         self.is_selected = True
@@ -40,7 +40,7 @@ class AttackItem:
             filename = 'itemsMap/attack_item_3_55x55.png'
         elif 5 <= self.level < 10:
             filename = 'itemsMap/attack_item_1_55x55.png'
-        elif self.level > 10:
+        elif self.level >= 10:
             filename = 'itemsMap/attack_item_2_55x55.png'
 
         return filename
@@ -52,7 +52,7 @@ class AttackItem:
             filename = 'itemsWindow/attack_item_3_100x100.png'
         elif 5 <= self.level < 10:
             filename = 'itemsWindow/attack_item_1_100x100.png'
-        elif self.level > 10:
+        elif self.level >= 10:
             filename = 'itemsWindow/attack_item_2_100x100.png'
 
         return filename

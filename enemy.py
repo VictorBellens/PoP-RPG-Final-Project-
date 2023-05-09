@@ -21,7 +21,7 @@ class Enemy:
             filename = 'spriteMap/Green Monster 55x55.png'
         elif 5 <= self.lvl < 10:
             filename = 'spriteMap/PurpleMonst2 55x55.png'
-        elif self.lvl > 10:
+        elif self.lvl >= 10:
             filename = 'spriteMap/Red Monster 55x55.png'
 
         return filename
@@ -33,7 +33,7 @@ class Enemy:
             filename = 'spriteActionWindow/Green Monster 148x148.png'
         elif 5 <= self.lvl < 10:
             filename = 'spriteActionWindow/PurpleMonst2 148x148.png'
-        elif self.lvl > 10:
+        elif self.lvl >= 10:
             filename = 'spriteActionWindow/Red Monster 148x148.png'
 
         return filename

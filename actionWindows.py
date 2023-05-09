@@ -193,20 +193,25 @@ class ItemWindow:
 
         self.character = character
         self.item = item
-        # self.item.sprite_window
         self.item_id = str(item).lower()[7]
         self.item_action = None
         self.__getItemAction(self.item_id)
 
-        self.sprite_window = Rectangle(Point(150, 100), Point(250, 200))
-        self.sprite_window.draw(self.window)
-
         self.buttons = [Button(self.window, Point(150, 300), 60, 40, 'Use', self.item_action, '1'),
                         Button(self.window, Point(250, 300), 60, 40, 'Store', self.character.storeInInventory, '2')]
         self.labels = []
+        self.__drawSprite()
 
         for button in self.buttons:
             button.activate()
+
+    def __drawSprite(self):
+        self.sprite_window = Rectangle(Point(150, 100), Point(250, 200))
+        self.sprite_window.draw(self.window)
+
+        filename = self.item.sprite_window
+        item_png = Image(Point(200, 150), filename)
+        item_png.draw(self.window)
 
     def __getItemAction(self, item_id):     # sets the proper action depending on the item
         if item_id == 'a':
@@ -482,7 +487,7 @@ class LabelWindow:
         self.window.focus_set()
 
         self.text = Text(Point(self.window_size[0]/2, self.window_size[1]/2), self.label)
-        self.text.setSize(12)
+        self.text.setSize(8)
         self.text.setStyle("bold")
         self.text.draw(self.window)
 

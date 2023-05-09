@@ -10,7 +10,6 @@ class Character:  # This is responsible for the character attributes, and all me
         self.max_hp = 100
         self.hp = self.max_hp
         self.atk = 10
-        # self.name = None          # 0 implementation
         self.gold = 100
 
         self.gold_accumulated = 0
@@ -121,6 +120,8 @@ class Character:  # This is responsible for the character attributes, and all me
         if self.current_pos == self.current_room.matrix[-1]:
             print("Moving to new room...")
             self.rooms_cleared += 1
+            if self.rooms_cleared == 1:
+                LabelWindow(narrative["next_room"])
             self.getNextRoom()
             self.current_pos = self.current_room.matrix[0]
 

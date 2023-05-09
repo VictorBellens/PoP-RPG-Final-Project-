@@ -23,15 +23,17 @@ narrative = {
     "item_health": "You have encountered a health item!\n"      # complete
                    "This will increase your health by a\n"
                    "certain amount depending on your xp level",
-    "item_max_hp": "Good one! This will increase your hp by 10. Use it wisely!",      # impl.
-    "item_attack": "Cool! You can now absorb its power and have a stronger attack.",      # impl.
-    "lvl_up": "Congratulations! You just leveled up, keep it up!",           # impl.
-    "lvl_2_kill": "Amazing! You just killed a level 5 monster",
-    "lvl_3_kill": "What a talent you are! You just killed a level 11 monster, the strongest monster out there!",
-    "next_room": "You have managed to clear your first room, good job! Are you ready for the next one? It will get harder!",
-    "d": "",
-    "e": "",
-
+    "item_max_hp": "Good one! This will increase your max hp depending on your level. \n"
+                   "Use it wisely!",      # complete
+    "item_attack": "Cool! You can now absorb its power and \n"
+                   "have a stronger attack against enemies.",      # complete
+    "lvl_up": "Congratulations! You just leveled up, keep it up!",           # complete
+    "lvl_2_kill": "Amazing! You just killed a level 5 monster",     # complete
+    "lvl_3_kill": "What a talent you are! You just killed a level 11 monster,\n"
+                  " they may look the same from here on out, but they'll get stronger!",
+    "next_room": "You have managed to clear your first room, good job!\n"
+                 "Are you ready for the next one? It will get harder!\n"
+                 "Bear in mind that you will die if you don't kill enemies!",
 }
 
 
@@ -115,8 +117,7 @@ def handle_input(window):       # handles the input from keyboard events
     return p, k
 
 
-def get_exit(obj):      # this is the get_exit method that most of the ActionWindows use, essentially just cleans the
-                        # code so that there won't be any errors
+def get_exit(obj):      # this is the get_exit method that most of the ActionWindows use, essentially easy exit from any
     while True:
         try:
             p, k = handle_input(obj.window)
