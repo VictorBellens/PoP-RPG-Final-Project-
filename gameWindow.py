@@ -13,9 +13,11 @@ class GameWindow:   # This controls the UI and button functionality
         self.rooms = []
         self.character = Character()
 
+        # MISCELLANEOUS
         self.run_flag = True
         self.save_log = save_log
         self.start_time = time()
+        self.negative_time = 0
 
         # positions of items
         self.enemy_positions = []
@@ -120,8 +122,11 @@ class GameWindow:   # This controls the UI and button functionality
 
         gold_text = Text(Point(86, 450), f'Gold: {gold}')
 
-        time_text = Text(Point(100, 480), f'{ctime(self.character.elapsed_time)[14:20]} '
-                                          f'/ {int(self.character.allowed_time/60)}:00')
+        try:
+            time_text = Text(Point(100, 480), f'{ctime(self.character.elapsed_time)[14:20]} '
+                                              f'/ {int(self.character.allowed_time/60)}:00')
+        except OSError:
+            time_text = Text(Point(100, 480), f'     / 2:00')
 
         self.labels = [hp_text, hp_rect, gold_text, xp_rect, xp_text, time_text]
 
@@ -177,9 +182,13 @@ class GameWindow:   # This controls the UI and button functionality
             self.shop_positions.append(shop_png)
 
     def _updateTimer(self):     # checks the timer, and updates the display
-        self.character.elapsed_time = (time() - self.character.start_time) - (15 * self.character.enemies_killed)
+        self.character.elapsed_time = (time() - self.character.start_time) - (15 * self.character.enemies_killed) + (
+                                       self.negative_time)
+
         if self.character.elapsed_time < 0:
-            self.character.elapsed_time += 15
+            self.negative_time += abs(int(self.character.elapsed_time)) % 15    # Time negative calculation
+            self.character.elapsed_time = self.negative_time
+
         if self.character.elapsed_time > self.character.allowed_time:
             self.window.close()
             self.character.endGame()
