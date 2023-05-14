@@ -24,10 +24,6 @@ class Room:     # This is responsible for the room information such as enemy/ite
         self.__setEnemyCount(enemy_count, xp_level)
         self.__setShopCount(shop_count, xp_level)
 
-        print(f"\nNumber of items: {len(self.items)}\n"
-              f"Number of enemies: {len(self.enemies)}\n"
-              f"Number of shops: {len(self.shops)}\n")    # for debug only
-
     def __setItemCount(self, item_chance, level):       # sets the number of items
         items = round(item_chance / 10) * random.randint(1, 3)      # we can create more RNG here
 

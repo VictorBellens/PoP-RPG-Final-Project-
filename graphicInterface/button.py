@@ -23,7 +23,8 @@ class Button:
         try:
             self.image = args[0]
         except IndexError:
-            print(f"{label} does not have an image configured")     # for debugging
+            pass
+            # print(f"{label} does not have an image configured")     # for debugging
 
         self.active = None                                          # added active to __init__
         self.action = action                                        # added action
@@ -67,5 +68,5 @@ class InventoryButton(Button):
             self.image = args[0]
         except IndexError:
             self.image = None
-            print(f"{label} has no image configured")
+            # print(f"{label} has no image configured")     # For debugging purposes
         super().__init__(self, win, center, width, height, label, action, key, self.image, *args)

@@ -113,7 +113,6 @@ def handle_input(window):       # handles the input from keyboard events
 
         p = window.checkMouse()
         time.sleep(0.1)
-
     return p, k
 
 
@@ -121,16 +120,16 @@ def get_exit(obj):      # this is the get_exit method that most of the ActionWin
     while True:
         try:
             p, k = handle_input(obj.window)
-        except graphicInterface.graphics.GraphicsError:     # handles force closing window
+        except graphicInterface.graphics.GraphicsError:  # handles force closing window
             obj.run_flag = False
             obj.window.close()
             break
         try:
-            if k == 'space' or (0 <= p.getX() <= 400 and 0 <= p.getY() <= 400):     # click anywhere or space to close
+            if k == 'space' or (0 <= p.getX() <= 400 and 0 <= p.getY() <= 400):  # click anywhere or space to close
                 obj.run_flag = False
                 obj.window.close()
                 break
-        except AttributeError:      # happens when p and k are not set (just runs again)
+        except AttributeError:  # happens when p and k are not set (just runs again)
             continue
 
 

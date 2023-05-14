@@ -137,7 +137,6 @@ class GameWindow:   # This controls the UI and button functionality
 
     def _updateEnemyLocation(self):     # updates all the enemy locations
         enemies = list(self.character.getEnemies())
-        print(enemies)
 
         for pos in self.enemy_positions:
             pos.undraw()
@@ -157,7 +156,6 @@ class GameWindow:   # This controls the UI and button functionality
 
         for item, item_pos in items:
             x, y = item_pos
-            print(item_pos, item)
 
             filename = item.sprite_map
             item_png = Image(self.display_matrix[x][y], filename)
@@ -167,7 +165,7 @@ class GameWindow:   # This controls the UI and button functionality
     def _updateShopLocation(self):      # updates all the shop locations
         shops = self.character.getShops()
         shop_positions = self.character.getShopPositions()
-        print(shops)
+
         for pos in self.shop_positions:
             pos.undraw()
 
@@ -181,7 +179,7 @@ class GameWindow:   # This controls the UI and button functionality
     def _updateTimer(self):     # checks the timer, and updates the display
         self.character.elapsed_time = (time() - self.character.start_time) - (15 * self.character.enemies_killed)
         if self.character.elapsed_time < 0:
-            self.character.elapsed_time = 0
+            self.character.elapsed_time += 15
         if self.character.elapsed_time > self.character.allowed_time:
             self.window.close()
             self.character.endGame()
